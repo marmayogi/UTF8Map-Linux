@@ -155,7 +155,7 @@ These tables are implemented as single-dimensional array of type short (refer `m
 
 Total number of entries in the table (single-dimensional array) is `128 + 144 + 128 + 128 + 128 + 112 + 48' = **816**.
 
-**How does the function 'up2cid' finds out the CID corresponding to a Unicode Point?**
+**How does the function 'up2cid' find out the CID corresponding to a Unicode Point?**
 The function **up2cid** adopts the following procedure to determine the CID from Unicode Point. This function inspects the zeroth slot of quad array `pUnicodeQuad` that contains unicode points as follows:
 1. Does Unicode Point of zeroth slot fall in `Basic Latin` Unicode Block (U+0000 - U+00FF)? If so, then `addr = pUnicodeQuad[0] - aUnicode[(int)ELang::eEng].blockBeg + 272`; where `272` is offset of `Basic Latin` section w.r.t. beginning of mapping table.
 2. Does Unicode Point of zeroth slot fall in `Latin-1 Supplement` Unicode Block (U+0080 - U+00FF)? If so, then `addr = pUnicodeQuad[0] - 0x0080 + 400`; where `400` is offset of `Latin-1 Supplement` section w.r.t. beginning of mapping table.

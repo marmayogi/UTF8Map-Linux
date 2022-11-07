@@ -446,12 +446,13 @@ char* strps(const ELang pLan, const EMyFont pMyFont, const char* pUTF8InString, 
 {
 	//
 	// This functions converts utf-8 encoded character to Postscript character code (16 bit) whose range will be between 0 to NumGlyphs-1.
+	// This function finally passes out character codes in hexadecimal format corresponding to the UTF-8 encoded string.
 	// 
 	// 1) pLan is an input parameter of type ELang supplying language of the Font.
 	// 2) pMyFont is an input parameter of type EMyFont indicating name of the font.
 	//    For example, Noto font, Vijaya font, Nirala font, etc.
-	// 3) pUTF8InString is an input array parameter of type char that carries UTF-8 characters terminated with NULL byte.
-	// 4) pPSOutString is an output array parameter of type char that passes out Postscript chracter Code corresponding to UTF-8 characters.
+	// 3) pUTF8InString is an input array parameter of type char that carries UTF-8 encoded string terminated with NULL byte.
+	// 4) pPSOutString is an output array parameter of type char that passes out Postscript chracter Codes in Hexadecimal format corresponding to UTF-8 encoded string.
 	//    This will be terminated with a NULL byte finally.
 	// 5) pPSCharSize is an input parameter indicating the size of array parameter pPSOutString.	
 	//    This includes space for terminating NULL byte.

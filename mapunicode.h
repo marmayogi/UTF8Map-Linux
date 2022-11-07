@@ -5,7 +5,7 @@
 
 //Unicode mapping to Character code (2 bytes) is supported for the following Languages--------------------------
 const int16_t cMaxLanguage = 12;		// English, Tamil, Hindi,		Malayalam, Telugu, Kannada,		Marathi, Gujarati,odia,		Punjabi, Bengali, Assamese
-enum class ELang : char {
+enum class ELang : char {// English, Tamil, Hindi,		Malayalam, Telugu, Kannada,		Marathi, Gujarati,odia,		Punjabi, Bengali, Assamese
 	eZero = 0,
 	eEnglish = 1, eEng = 1,	//  1. short form for English which is for convenience
 	eTamil,					//  2. Tamil language
@@ -35,7 +35,7 @@ typedef struct SUnicodeBlock {
 } SUnicodeBlock;
 static const SUnicodeBlock aUnicode[cMaxLanguage + 1] = {
 	{ELang::eZero,0},							// Zero entry
-	{ELang::eEnglish,	0x0000, 0x00ff},		// Entry corresponding to English.
+	{ELang::eEnglish,	0x0000, 0x00ff},		// Entry corresponding to Latin.
 	{ELang::eTamil,		0x0B80, 0x0BFF},		// Range of Tamil Script is from 2944(U+0B80) to 3071(U+0BFF). Total 128 bytes are allocated.
 	{ELang::eHindi,		0x0900, 0x097F},		// Range of Hindi Script is from 2304(U+0900) to 2431(U+097F). Total 128 bytes are allocated.
 	{ELang::eMalayalam,	0x0D02, 0x0D4D},		// Range of Malayalam Script is from 3330(U+0D02) to 3405(U+0D4D) 128 code points. Number of assigned Characters are 118.
@@ -51,7 +51,7 @@ static const SUnicodeBlock aUnicode[cMaxLanguage + 1] = {
 
 typedef struct SMyFont {
 	short numGlyphs;							// total glyphs in the character set.
-	const char *name;							// font name such as  /myNotoTamil {/NotoSansTamil-Regular findfont exch scalefont setfont} bind def
+	const char *name;							// 'myNotoTamil' is the font name as indicated in Postscript procedure: /myNotoTamil {/NotoSansTamil-Regular findfont exch scalefont setfont} bind def
 	const char *psname;							// Postscript font name.
 	const char *fname;							// File name of the font in the disk.
 } SMyFont;
@@ -67,65 +67,65 @@ static const SMyFont asMyFont[cMaxLanguage + 1][10+2] = {		// Maximum 10 font fi
 	{0,},
 	// 1. English language. Entires are not allowed since this is meant for Indian Languages.
 	{0,},											
-	// 2. Tamil language. After all Font names are entered, terminate with NULL address.
+	// 2. Tamil language. After all Font names are entered, terminate with Zero entry.
 	{
 	//	NumGlyphs	name			Postscript name					file name in the disk.
-		{0,},																								// Always begins with a NULL entry
+		{0,},																								// Always begins with Zero entry
 		{534, "myNotoTamil",		"NotoSansTamil-Regular",		"NotoSansTamil-Regular.t42"},			// Google's Tamil Font (Regular)
 		{534, "myNotoTamilBold",	"NotoSansTamil-Bold",			"NotoSansTamil-Bold.t42"},				// Google's Tamil Font (Bold)
 		{434, "myLathaTamil",		"Latha",						"latha.t42"},							// Microsoft's Tamil Font (Regular)
 		{434, "myLathaTamilBold",	"Latha-Bold",					"lathab.t42"},							// Microsoft's Tamil Font (Bold)
-		{0},																								// Terminate with a NULL entry.
+		{0},																								// Terminate with Zero entry.
 	},
-	// 3. Hindi language. After all Font names are entered, terminate with NULL entry.
+	// 3. Hindi language. After all Font names are entered, terminate with Zero entry.
 	{
-		{0,},											// Always begins with a NULL entry
-		{0,},											// Terminate with a NULL entry.
+		{0,},											// Always begins with Zero entry.
+		{0,},											// Terminate with Zero entry.
 	},
-	// 4. Malayalam language. After all Font names are entered, terminate with NULL entry.
+	// 4. Malayalam language. After all Font names are entered, terminate with Zero entry.
 	{
-		{0,},											// Always begins with a NULL entry
-		{0,},											// Terminate with a NULL entry.
+		{0,},											// Always begins with Zero entry.
+		{0,},											// Terminate with Zero entry.
 	},
-	// 5. Telugu language. After all Font names are entered, terminate with NULL entry.
+	// 5. Telugu language. After all Font names are entered, terminate with Zero entry.
 	{
-		{0,},											// Always begins with a NULL entry
-		{0,},											// Terminate with a NULL entry.
+		{0,},											// Always begins with Zero entry.
+		{0,},											// Terminate with Zero entry.
 	},
-	// 6. Kannada language. After all Font names are entered, terminate with NULL entry.
+	// 6. Kannada language. After all Font names are entered, terminate with Zero entry.
 	{
-		{0,},											// Always begins with a NULL entry
-		{0,},											// Terminate with a NULL entry.
+		{0,},											// Always begins with Zero entry.
+		{0,},											// Terminate with Zero entry.
 	},
-	// 7. Marathi language. After all Font names are entered, terminate with NULL entry.
+	// 7. Marathi language. After all Font names are entered, terminate with Zero entry.
 	{
-		{0,},											// Always begins with a NULL entry
-		{0,},											// Terminate with a NULL entry.
+		{0,},											// Always begins with Zero entry
+		{0,},											// Terminate with Zero entry.
 	},
-	// 8. Gujarati language. After all Font names are entered, terminate with NULL entry.
+	// 8. Gujarati language. After all Font names are entered, terminate with Zero entry.
 	{
-		{0,},											// Always begins with a NULL entry
-		{0,},											// Terminate with a NULL entry.
+		{0,},											// Always begins with Zero entry
+		{0,},											// Terminate with Zero entry.
 	},
-	// 9. Odia language. After all Font names are entered, terminate with NULL entry.
+	// 9. Odia language. After all Font names are entered, terminate with Zero entry.
 	{
-		{0,},											// Always begins with a NULL entry
-		{0,},											// Terminate with a NULL entry.
+		{0,},											// Always begins with Zero entry
+		{0,},											// Terminate with Zero entry.
 	},
-	// 10. Punjabi language. After all Font names are entered, terminate with NULL entry.
+	// 10. Punjabi language. After all Font names are entered, terminate with Zero entry.
 	{
-		{0,},											// Always begins with a NULL entry
-		{0,},											// Terminate with a NULL entry.
+		{0,},											// Always begins with Zero entry
+		{0,},											// Terminate with Zero entry.
 	},
-	// 11. Bengali language. After all Font names are entered, terminate with NULL entry.
+	// 11. Bengali language. After all Font names are entered, terminate with Zero entry.
 	{
-		{0,},											// Always begins with a NULL entry
-		{0,},											// Terminate with a NULL entry.
+		{0,},											// Always begins with Zero entry
+		{0,},											// Terminate with Zero entry.
 	},
-	// 12. Assamese language. After all Font names are entered, terminate with NULL entry.
+	// 12. Assamese language. After all Font names are entered, terminate with Zero entry.
 	{
-		{0,},											// Always begins with a NULL entry
-		{0,},											// Terminate with a NULL entry.
+		{0,},											// Always begins with Zero entry
+		{0,},											// Terminate with Zero entry.
 	},
 };
 // This maps unicode to CID
@@ -148,24 +148,24 @@ static const short aNotoSansTamilMap[] = {
 //																		௰		௱		௲		௳		௴		௵		௶		௷		௸		௹		௺		R		R		R		R		R	
 	65,66,67,68,	69,70,71,72,	73,74,75,0,		0,0,0,0,		// U+0BF0,U+0BF1,U+0BF2,U+0BF3,		U+0BF4,U+0BF5,U+0BF6,U+0BF7,	U+0BF8,U+0BF9,U+0BFA,U+0BFB,	U+0BFC,U+0BFD,U+0BFE,U+0BFF,		
 
-// 128 - 258 glyphs	(131 placeholders but 94 valid glyps) Ligature
-	76,77,78,79,		80,81,82,83,		84,85,86,87,		88,89,90,91,		// க்ஷ,க்,ங்,ச்,			ஜ்,ஞ்,ட்,ண்,			த்,ந்,ன்,ப்,				ம்,ய்,ர்,ற்,
+// 128 - 271 glyphs	(144 placeholders but 94 valid glyps) Ligature
+	76,77,78,79,		80,81,82,83,		84,85,86,87,		88,89,90,91,		// க்ஷ,க்,ங்,ச்,			ஜ்,ஞ்,ட்,ண்,			த்,ந்,ன்,ப்,						ம்,ய்,ர்,ற்,
 	92,93,94,95,		96,97,98,99,		100,0,0,0,			0,0,0,0,			// ல்,ள்,ழ்,வ்,			ஶ்,ஷ்,ஸ்,ஹ்,			க்ஷ்,
-//																					   ....க.....			....ங....				....ச....				.....ஜ....
-	0,101,102,103,		0,104,105,106,		0,107,108,109,		0,110,0,0,			// கி,கீ,கு,கூ,			ஙி,ஙீ,ஙு,ஙூ,			சி,சீ,சு,சூ,				ஜி,ஜீ,ஜு,ஜூ
-//																					   ....ஞ....			....ட....				....ண....				....த....
-	0,111,112,113,		114,115,116,117,	0,118,119,120,		0,121,122,123,		// ஞி,ஞீ,ஞு,ஞூ,		டி,டீ,டு,டூ,				ணி,ணீ,ணு,ணூ,		தி,தீ,து,தூ,
-//																					   ....ந....			....ன....				....ப....				....ம....
-	0,124,125,126,		0,127,128,129,		0,130,131,132,		0,133,134,135,		// நி,நீ,நு,நூ,			னி,னீ,னு,னூ,			பி,பீ,பு,பூ,				மி,மீ,மு,மூ,
-//																					   ....ய....			....ர....				....ற....				....ல....
-	0,136,137,138,		0,139,140,141,		0,142,143,144,		145,146,147,148,	// யி,யீ,யு,யூ,			ரி,ரீ,ரு,ரூ,				றி,றீ,று,றூ,			லி,லீ,லு,லூ,
-//																					   ....ள....			....ழ....				....வ....				....ஷ....
-	0,149,150,151,		0,152,153,154,		0,155,156,157,		0,158,0,0,			// ளி,ளீ,ளு,ளூ,		ழி,ழீ,ழு,ழூ,			வி,வீ,வு,வூ,			ஷி,ஷீ,ஷு,ஷூ,			
-//																					   ....ஸ....			....ஹ....				....க்ஷ....			
-	159,160,0,0,		0,161,0,0,			0,162,0,0,			163,164,165,166,	// ஸி,ஸீ,ஸு,ஸூ,	ஹி,ஹீ,ஹு,ஹூ		க்ஷி,க்ஷீ,க்ஷு,க்ஷூ,	ஸ்ரீ,sym,sym,sym,			
-	167,168,169,																	// sym,sym,sym,
+//																					   ....க.....			....ங....				....ச....						.....ஜ....
+	0,101,102,103,		0,104,105,106,		0,107,108,109,		0,110,0,0,			// கி,கீ,கு,கூ,			ஙி,ஙீ,ஙு,ஙூ,			சி,சீ,சு,சூ,						ஜி,ஜீ,ஜு,ஜூ
+//																					   ....ஞ....			....ட....				....ண....						....த....
+	0,111,112,113,		114,115,116,117,	0,118,119,120,		0,121,122,123,		// ஞி,ஞீ,ஞு,ஞூ,		டி,டீ,டு,டூ,				ணி,ணீ,ணு,ணூ,				தி,தீ,து,தூ,
+//																					   ....ந....			....ன....				....ப....						....ம....
+	0,124,125,126,		0,127,128,129,		0,130,131,132,		0,133,134,135,		// நி,நீ,நு,நூ,			னி,னீ,னு,னூ,			பி,பீ,பு,பூ,						மி,மீ,மு,மூ,
+//																					   ....ய....			....ர....				....ற....						....ல....
+	0,136,137,138,		0,139,140,141,		0,142,143,144,		145,146,147,148,	// யி,யீ,யு,யூ,			ரி,ரீ,ரு,ரூ,				றி,றீ,று,றூ,					லி,லீ,லு,லூ,
+//																					   ....ள....			....ழ....				....வ....						......ஶ......
+	0,149,150,151,		0,152,153,154,		0,155,156,157,		0,0,0,0,			// ளி,ளீ,ளு,ளூ,		ழி,ழீ,ழு,ழூ,			வி,வீ,வு,வூ,					ஶி,ஶீ,ஶு,ஶூ					
+//																					   ....ஷ....			....ஸ....				....ஹ....						....க்ஷ....			
+	0,158,0,0,			159,160,0,0,		0,161,0,0,			0,162,0,0,			// ஷி,ஷீ,ஷு,ஷூ,	ஸி,ஸீ,ஸு,ஸூ,		ஹி,ஹீ,ஹு,ஹூ				க்ஷி,க்ஷீ,க்ஷு,க்ஷூ,			
+	163,164,165,166,	167,168,169,0,		0,0,0,0,			0,0,0,0,			// ஸ்ரீ,sym,sym,sym,		sym,sym,sym,unused		unused,unused,unused,unused		unused,unused,unused,unused
 
-// 	Basic Latin (259 - 386) (128 glyphs)-------------
+// 	Basic Latin (272 - 399) (128 glyphs)-------------
 // 	                                																																							CR	
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			0,2,0,0,			// U+0000,U+0001,U+0002,U+0003,		U+0004,U+0005,U+0006,U+0007,	U+0008,U+0009,U+000A,U+000B,	U+000C,U+000D,U+000E,U+000F,
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			0,0,0,0,			// U+0010,U+0011,U+0012,U+0013,		U+0014,U+0015,U+0016,U+0017,	U+0018,U+0019,U+001A,U+001B,	U+001C,U+001D,U+001E,U+001F,		
@@ -181,7 +181,8 @@ static const short aNotoSansTamilMap[] = {
 	519,370,382,383,	388,392,401,402,	406,408,417,419,	421,426,427,433,	// U+0060,U+0061,U+0062,U+0063,		U+0064,U+0065,U+0066,U+0067,	U+0068,U+0069,U+006A,U+006B,	U+006C,U+006D,U+006E,U+006F,
 //																						p		q		r		s		t		u		v		w		x		y		z		{		|		}		~		Del	
 	443,445,446,450,	456,459,469,470,	475,476,481,204,	205,206,207,208,	// U+0070,U+0071,U+0072,U+0073,		U+0074,U+0075,U+0076,U+0077,	U+0078,U+0079,U+007A,U+007B,	U+007C,U+007D,U+007E,U+007F,
-// Latin-1 Supplement (387 - 514) (128 glyphs)-------------
+
+// Latin-1 Supplement (400 - 527) (128 glyphs)-------------
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			0,0,0,0,			// U+0080,U+0081,U+0082,U+0083,		U+0084,U+0085,U+0086,U+0087,	U+0088,U+0089,U+008A,U+008B,	U+008C,U+008D,U+008E,U+008F,		
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			0,0,0,0,			// U+0090,U+0091,U+0092,U+0093,		U+0094,U+0095,U+0096,U+0097,	U+0098,	U+0099,U+009A,U+009B,	U+009C,U+009D,U+009E,U+009F,	
 //																								¡		¢		£		¤		¥		¦		§		¨		©		ª		«		¬				®		¯	
@@ -196,7 +197,8 @@ static const short aNotoSansTamilMap[] = {
 	376,371,374,380,	375,379,381,386,	398,393,395,396,	413,410,411,412,	// U+00E0,U+00E1,U+00E2,U+00E3,		U+00E4,U+00E5,U+00E6,U+00E7,	U+00E8,U+00E9,U+00EA,U+00EB,	U+00EC,U+00ED,U+00EE,U+00EF,	
 //																						ð		ñ		ò		ó		ô		õ		ö		÷		ø		ù		ú		û		ü		ý		þ		ÿ	
 	0,431,437,434,		435,441,436,0,		440,464,460,462,	463,477,444,479,	// U+00F0,U+00F1,U+00F2,U+00F3,		U+00F4,U+00F5,U+00F6,U+00F7,	U+00F8,U+00F9,U+00FA,U+00FB,	U+00FC,U+00FD,U+00FE,U+00FF,		
-// Latin Extended-A (515 - 642) (128 glyphs)-------------
+
+// Latin Extended-A (528 - 655) (128 glyphs)-------------
 //																						Ā		ā		Ă		ă		Ą		ą		Ć		ć		Ĉ		ĉ		Ċ		ċ		Č		č		Ď		ď		
 	263,377,258,372,	264,378,270,384,	0,0,273,387,		271,385,276,390,	// U+0100,U+0101,U+0102,U+0103,		U+0104,U+0105,U+0106,U+0107,	U+0108,	U+0109,U+010A,U+010B,	U+010C,U+010D,U+010E,U+010F,		
 //																						Đ		đ		Ē		ē		Ĕ		ĕ		Ė		ė		Ę		ę		Ě		ě		Ĝ		ĝ		Ğ		ğ
@@ -215,7 +217,7 @@ static const short aNotoSansTamilMap[] = {
 	350,465,352,467,	357,472,363,478,	364,367,482,369,	484,368,483,0,		// U+0170,U+0171,U+0172,U+0173,		U+0174,U+0175,U+0176,U+0177,	U+0178,U+0179,U+017A,U+017B,	U+017C,U+017D,U+017E,U+017F,	
 
 
-// General Punctuation (643 - 754) (112 glyphs)-------------
+// General Punctuation (656 - 767) (112 glyphs)-------------
 //																						
 	0,0,0,0,			0,0,0,0,			0,0,0,239,			240,241,0,0,		// U+2000,U+2001,U+2002,U+2003,		U+2004,U+2005,U+2006,U+2007,	U+2008,	U+2009,U+200A,U+200B,	U+200C,U+200D,U+200E,U+200F,		
 //																						‐		‑		‒		–		—		―		‖		‗		‘		’		‚		‛		“		”		„		‟
@@ -231,7 +233,7 @@ static const short aNotoSansTamilMap[] = {
 //																						
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			0,0,0,0,			// U+2060,U+2061,U+2062,U+2063,		U+2064,U+2065,U+2066,U+2067,	U+2068,U+2069,U+206A,U+206B,	U+206C,U+206D,U+206E,U+206F,		
 
-// Currency Symbols (755 - 802) (48 glyphs)-------------
+// Currency Symbols (768 - 815) (48 glyphs)-------------
 //																						₠		₡		₢		₣		₤		₥		₦		₧		₨		₩		₪		₫		€		₭		₮		₯	
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			505,0,0,0,			// U+20A0,U+20A1,U+20A2,U+20A3,		U+20A4,U+20A5,U+20A6,U+20A7,	U+20A8,U+20A9,U+20AA,U+20AB,	U+20AC,U+20AD,U+20AE,U+20AF,	
 //																						₰		₱		₲		₳		₴		₵		₶		₷		₸		₹		₺		₻		₼		₽		₾		₿	
@@ -261,7 +263,7 @@ static const short aLathaTamilMap[] = {
 //																		௰		௱		௲		௳		௴		௵	௶		௷		௸		௹		௺		R		R		R		R		R	
 	110,111,112,194,	195,196,197,198,	199,200,201,0,0,0,0,0,	// U+0BF0,U+0BF1,U+0BF2,U+0BF3,		U+0BF4,U+0BF5,U+0BF6,U+0BF7,	U+0BF8,U+0BF9,U+0BFA,U+0BFB,	U+0BFC,U+0BFD,U+0BFE,U+0BFF,		
 
-// 128 - 266 glyphs	(133 placeholders but 82 valid glyps) Ligature
+// 128 - 271 glyphs	(144 placeholders but 82 valid glyps) Ligature
 	113,116,117,118,	119,120,121,122,	123,124,125,126,	127,128,129,130,	// க்ஷ,க்,ங்,ச்,			ஜ்,ஞ்,ட்,ண்,			த்,ந்,ன்,ப்,				ம்,ய்,ர்,ற்,
 	131,132,133,134,	432,135,136,137,	138,0,0,0,			0,0,0,0,			// ல்,ள்,ழ்,வ்,			ஶ்,ஷ்,ஸ்,ஹ்,			க்ஷ்,
 //																					   ....க.....			....ங....				....ச....				.....ஜ....
@@ -272,13 +274,13 @@ static const short aLathaTamilMap[] = {
 	0,0,164,165,		0,0,167,168,		0,0,169,170,		0,0,171,172,		// நி,நீ,நு,நூ,			னி,னீ,னு,னூ,			பி,பீ,பு,பூ,				மி,மீ,மு,மூ,
 //																					   ....ய....			....ர....				....ற....				....ல....
 	0,0,173,174,		190,191,175,176,	0,0,178,179,		0,426,180,181,		// யி,யீ,யு,யூ,			ரி,ரீ,ரு,ரூ,				றி,றீ,று,றூ,			லி,லீ,லு,லூ,
-//																					   ....ள....			....ழ....				....வ....				....ஷ....
-	0,0,182,183,		0,0,184,185,		0,0,186,187,		0,0,0,0,			// ளி,ளீ,ளு,ளூ,		ழி,ழீ,ழு,ழூ,			வி,வீ,வு,வூ,			ஷி,ஷீ,ஷு,ஷூ,			
-//																					   ....ஸ....			....ஹ....				....க்ஷ....			
-	0,425,0,0,			0,0,0,0,			0,0,0,0,			188,427,428,429,	// ஸி,ஸீ,ஸு,ஸூ,	ஹி,ஹீ,ஹு,ஹூ		க்ஷி,க்ஷீ,க்ஷு,க்ஷூ,	ஸ்ரீ, ர், ரி, ரீ, 		
-	166,424,177,140,	141,142,143,144,	145,146,147,							// naa, nnaa, raa,sym,	sym,sym,sym,sym,		sym,sym,sym,	
+//																					   ....ள....			....ழ....				....வ....				....ஶ....			
+	0,0,182,183,		0,0,184,185,		0,0,186,187,		0,0,0,0,			// ளி,ளீ,ளு,ளூ,		ழி,ழீ,ழு,ழூ,			வி,வீ,வு,வூ,			ஶி,ஶீ,ஶு,ஶூ					
+//																					   ....ஷ....			....ஸ....				....ஹ....				....க்ஷ....			
+	0,0,0,0,			0,425,0,0,			0,0,0,0,			0,0,0,0,			// ஷி,ஷீ,ஷு,ஷூ,	ஸி,ஸீ,ஸு,ஸூ,		ஹி,ஹீ,ஹு,ஹூ		க்ஷி,க்ஷீ,க்ஷு,க்ஷூ,	 		
+	188,427,428,429,	166,424,177,140,	141,142,143,144,	145,146,147,0,		// ஸ்ரீ, ர், ரி, ரீ,	   naa, nnaa, raa,sym,		sym,sym,sym,sym,		sym,sym,sym,unused	
 
-// 	Basic Latin (267 - 394) (128 glyphs)-------------
+// 	Basic Latin (272 - 399) (128 glyphs)-------------
 // 	                                																																							CR	
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			0,2,0,0,			// U+0000,U+0001,U+0002,U+0003,		U+0004,U+0005,U+0006,U+0007,	U+0008,U+0009,U+000A,U+000B,	U+000C,U+000D,U+000E,U+000F,
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			0,0,0,0,			// U+0010,U+0011,U+0012,U+0013,		U+0014,U+0015,U+0016,U+0017,	U+0018,U+0019,U+001A,U+001B,	U+001C,U+001D,U+001E,U+001F,		
@@ -294,7 +296,7 @@ static const short aLathaTamilMap[] = {
 	266,267,268,269,	270,271,272,273,	274,275,276,277,	278,279,280,281,	// U+0060,U+0061,U+0062,U+0063,		U+0064,U+0065,U+0066,U+0067,	U+0068,U+0069,U+006A,U+006B,	U+006C,U+006D,U+006E,U+006F,
 //																						p		q		r		s		t		u		v		w		x		y		z		{		|		}		~		Del	
 	282,283,284,285,	286,287,288,289,	290,291,292,293,	294,295,296,0,		// U+0070,U+0071,U+0072,U+0073,		U+0074,U+0075,U+0076,U+0077,	U+0078,U+0079,U+007A,U+007B,	U+007C,U+007D,U+007E,U+007F,
-// Latin-1 Supplement (395 - 522) (128 glyphs)-------------
+// Latin-1 Supplement (400 - 527) (128 glyphs)-------------
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			0,0,0,0,			// U+0080,U+0081,U+0082,U+0083,		U+0084,U+0085,U+0086,U+0087,	U+0088,U+0089,U+008A,U+008B,	U+008C,U+008D,U+008E,U+008F,		
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			0,0,0,0,			// U+0090,U+0091,U+0092,U+0093,		U+0094,U+0095,U+0096,U+0097,	U+0098,	U+0099,U+009A,U+009B,	U+009C,U+009D,U+009E,U+009F,	
 //																								¡		¢		£		¤		¥		¦		§		¨		©		ª		«		¬				®		¯	
@@ -309,7 +311,7 @@ static const short aLathaTamilMap[] = {
 	387,388,389,390,	391,392,393,394,	395,396,397,398,	399,400,401,402,	// U+00E0,U+00E1,U+00E2,U+00E3,		U+00E4,U+00E5,U+00E6,U+00E7,	U+00E8,U+00E9,U+00EA,U+00EB,	U+00EC,U+00ED,U+00EE,U+00EF,	
 //																						ð		ñ		ò		ó		ô		õ		ö		÷		ø		ù		ú		û		ü		ý		þ		ÿ	
 	403,404,405,406,	407,408,409,410,	411,412,413,414,	415,416,417,418,	// U+00F0,U+00F1,U+00F2,U+00F3,		U+00F4,U+00F5,U+00F6,U+00F7,	U+00F8,U+00F9,U+00FA,U+00FB,	U+00FC,U+00FD,U+00FE,U+00FF,		
-// Latin Extended-A (523 - 650) (128 glyphs)-------------
+// Latin Extended-A (528 - 655) (128 glyphs)-------------
 //																						Ā		ā		Ă		ă		Ą		ą		Ć		ć		Ĉ		ĉ		Ċ		ċ		Č		č		Ď		ď		
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			0,0,0,0,			// U+0100,U+0101,U+0102,U+0103,		U+0104,U+0105,U+0106,U+0107,	U+0108,	U+0109,U+010A,U+010B,	U+010C,U+010D,U+010E,U+010F,		
 //																						Đ		đ		Ē		ē		Ĕ		ĕ		Ė		ė		Ę		ę		Ě		ě		Ĝ		ĝ		Ğ		ğ
@@ -327,7 +329,7 @@ static const short aLathaTamilMap[] = {
 //																						Ű		ű		Ų		ų		Ŵ		ŵ		Ŷ		ŷ		Ÿ		Ź		ź		Ż		ż		Ž		ž		ſ		
 	0,0,0,0,			0,0,0,0,			323,0,0,0,			0,309,322,0,		// U+0170,U+0171,U+0172,U+0173,		U+0174,U+0175,U+0176,U+0177,	U+0178,U+0179,U+017A,U+017B,	U+017C,U+017D,U+017E,U+017F,	
 
-// General Punctuation (651 - 762) (112 glyphs)-------------
+// General Punctuation (656 - 767) (112 glyphs)-------------
 //																						
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			0,0,0,0,			// U+2000,U+2001,U+2002,U+2003,		U+2004,U+2005,U+2006,U+2007,	U+2008,	U+2009,U+200A,U+200B,	U+200C,U+200D,U+200E,U+200F,		
 //																						‐		‑		‒		–		—		―		‖		‗		‘		’		‚		‛		“		”		„		‟
@@ -344,7 +346,7 @@ static const short aLathaTamilMap[] = {
 	0,0,0,0,			0,0,0,0,			0,0,0,0,			0,0,0,0,			// U+2060,U+2061,U+2062,U+2063,		U+2064,U+2065,U+2066,U+2067,	U+2068,U+2069,U+206A,U+206B,	U+206C,U+206D,U+206E,U+206F,		
 
 
-// Currency Symbols (763 - 810) (48 glyphs)-------------
+// Currency Symbols (768 - 815) (48 glyphs)-------------
 //																						₠		₡		₢		₣		₤		₥		₦		₧		₨		₩		₪		₫		€		₭		₮		₯	
 	0,0,0,0,			0,0,0,0,			423,0,0,0,			297,0,0,0,			// U+20A0,U+20A1,U+20A2,U+20A3,		U+20A4,U+20A5,U+20A6,U+20A7,	U+20A8,U+20A9,U+20AA,U+20AB,	U+20AC,U+20AD,U+20AE,U+20AF,	
 //																						₰		₱		₲		₳		₴		₵		₶		₷		₸		₹		₺		₻		₼		₽		₾		₿	

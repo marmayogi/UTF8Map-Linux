@@ -145,13 +145,13 @@ static const SUnicodeBlock aUnicode[cMaxLanguage + 1] = {
 ##### Mapping tables aNotoSansTamilMap and aLathaTamilMap.
 These tables are implemented as single-dimensional array of type short (refer `mapunicode.h`). The entries in these mapping tables are divided logically into 7 sections based on Unicode Blocks except one as follows:
 
-1. Based on Unicode Block for `Tamil` (U+0B80 to U+0BFF), there are 128 entries. The offset of this section is `zero` w.r.t. the beginning of array.
-2. This is the only section which is not associated with any Code Block and this section belongs to Tamil Glyphs with no Unicode Points. There are 144 entries and the offset is `128` w.r.t. the beginning of array.
-3. This section belongs to `Basic Latin` whose Unicode Block is from U+0000 to U+007F. There are 128 entries and the offset is `272` w.r.t. the beginning of array.
-4. `Latin-1 Supplement` is associated with this section having Unicode Block is from U+0080 to U+00FF. There are 128 entries and the offset is `400` w.r.t. the beginning of array.
-5. This section belongs to `Latin Extended-A` whose Unicode Block is from U+0100 to U+017F. There are 128 entries and the offset is `528` w.r.t. the beginning of array.
-6. This section is for `General Punctuation` whose Unicode Block is from U+2000 to U+206F. There are 112 entries and the offset is `656` w.r.t. the beginning of array.
-7. This section belongs to `Currency Symbols` whose Unicode Block is from U+20A0 to U+20CF. There are 48 entries and the offset is `768` w.r.t. the beginning of array.
+1. Based on Unicode Block for `Tamil` (U+0B80 to U+0BFF), there are 128 entries. The offset of this section is `zero` w.r.t. the beginning of mapping table.
+2. This is the only section which is not associated with any Code Block and this section belongs to Tamil Glyphs with no Unicode Points. There are 144 entries and the offset is `128` w.r.t. the beginning of mapping table.
+3. This section belongs to `Basic Latin` whose Unicode Block is from U+0000 to U+007F. There are 128 entries and the offset is `272` w.r.t. the beginning of mapping table.
+4. `Latin-1 Supplement` is associated with this section having Unicode Block is from U+0080 to U+00FF. There are 128 entries and the offset is `400` w.r.t. the beginning of mapping table.
+5. This section belongs to `Latin Extended-A` whose Unicode Block is from U+0100 to U+017F. There are 128 entries and the offset is `528` w.r.t. the beginning of mapping table.
+6. This section is for `General Punctuation` whose Unicode Block is from U+2000 to U+206F. There are 112 entries and the offset is `656` w.r.t. the beginning of mapping table.
+7. This section belongs to `Currency Symbols` whose Unicode Block is from U+20A0 to U+20CF. There are 48 entries and the offset is `768` w.r.t. the beginning of mapping table.
 
 Total number of entries in the table (single-dimensional array) is `128 + 144 + 128 + 128 + 128 + 112 + 48' = **816**.
 

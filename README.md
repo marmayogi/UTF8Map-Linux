@@ -65,7 +65,7 @@ It is mandatory to understand UTF-8 encoding before exploring **strps** function
 ##### What is strps function?
 This is a mapping function that produces CIDs from UTF-8 encoded strings and performs the following tasks:
 1. Decodes UTF-8 encoded string and collects atmost four Unicode Points into `quad` buffer. This buffer won't hold more than 4 unicode points any time.
-2. Dispatches quad buffer (consisting of 4 Unicode Points) to function **up2cid** which maps `Unicode Points` to CIDs with the help of a `mapping table` (implemented as a single dimensional array constructed with the help of Unicode Blocks. Refer `mapunicode.h`).
+2. Dispatches quad buffer (consisting of atmost 4 Unicode Points) to function **up2cid** which maps `Unicode Points` to CIDs with the help of a `mapping table` (implemented as a single dimensional array constructed with the help of Unicode Blocks. Refer `mapunicode.h`).
    - The first parameter of **up2cid** function is language code `pLan` which is one of Tamil, Hindi, Malayalam, Telugu, Kannada, Marathi, Gujarati,odia, Punjabi, Bengali, Assamese. Refer `mapunicode.h`.
    - The second parameter of **up2cid** function is `pMyFont`. There are as many as 10 fonts are supported for each language  Refer `asMyFont` which is a two-dimensional array of structue `SMyFont` in `mapunicode.h`.
    - The third parameter of **up2cid** function is `pUnicodeQuad` which is a `quad` array of type uint32_t. This will contain atmost 4 Unicode Points. The number of unicode points present in the quad array is indicated by the 4th paramater `pCntUnicode`. This varies from 1 to 4. Bear in mind that this number will never exceed 4.

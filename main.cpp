@@ -445,7 +445,7 @@ short up2cid(const ELang pLan, const EMyFont pMyFont, const uint32_t pUnicodeQua
 char* strps(const ELang pLan, const EMyFont pMyFont, const char* pUTF8InString, char* pPSOutString, const unsigned short pPSOutputStringSize)		// convert utf-8 string to Postscript character code string.
 {
 	//
-	// This functions converts utf-8 encoded character to Postscript characater code whose range will be between 128 to 255.
+	// This functions converts utf-8 encoded character to Postscript character code (16 bit) whose range will be between 0 to NumGlyphs-1.
 	// 
 	// 1) pLan is an input parameter of type ELang supplying language of the Font.
 	// 2) pMyFont is an input parameter of type EMyFont indicating name of the font.

@@ -1,7 +1,6 @@
 //
 // This Conversion program was written by Marmayogi, Astrologer and Palmist, Sri Mahakali Jyothida Nilayam, Coimbatore, India.
-// This Converts TTF to a Type 2 CIDFont, with base font Type 42, which can be accessed through a postscript program.
-// This is particulary useful for Indian Languages having glyphs in excess of 255 in the character set.
+// This maps utf-8 encoded string to Postscript character code (16 bit) in hexadecimal format.
 // 
 // Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.
 //
@@ -445,7 +444,7 @@ short up2cid(const ELang pLan, const EMyFont pMyFont, const uint32_t pUnicodeQua
 char* strps(const ELang pLan, const EMyFont pMyFont, const char* pUTF8InString, char* pPSOutString, const unsigned short pPSOutputStringSize)		// convert utf-8 string to Postscript character code string.
 {
 	//
-	// This functions converts utf-8 encoded character to Postscript character code (16 bit) whose range will be between 0 to NumGlyphs-1.
+	// This functions maps utf-8 encoded string to Postscript character code (16 bit) whose range will be between 0 to NumGlyphs-1.
 	// This function finally passes out character codes in hexadecimal format corresponding to the UTF-8 encoded string.
 	// 
 	// 1) pLan is an input parameter of type ELang supplying language of the Font.

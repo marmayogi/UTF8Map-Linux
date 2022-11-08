@@ -9,11 +9,11 @@ This standalone utility, written in C++, utilizes `t42` font (Type 0 Composite f
 
 The CIDMap of `t42` font enforces an identity mapping as follows:
 ```
-character code 0 maps to Glyph index 0
-character code 1 maps to Glyph index 1
-character code 2 maps to Glyph index 2
+Character code 0 maps to Glyph index 0
+Character code 1 maps to Glyph index 1
+Character code 2 maps to Glyph index 2
 ......
-character code NumGlyphs-1 maps to Glyph index NumGlyphs-1
+Character code NumGlyphs-1 maps to Glyph index NumGlyphs-1
 ```
 It is clearly evident that there is no unicode involved in this mapping. To understand concretely, edit the following postscript program `tamil.ps` that accesses `t42` font through postscript's `findfont` operator.
 
@@ -36,7 +36,7 @@ This will display two strings `தமிழ் தங்களை வரவே�
 
 Note that the strings for `show` operator are in Hexadecimal format embeded within angular brackets. Operator `show` extracts 2 bytes at a time and maps this CID (16 bit value) to a Glyph. The first 4 Hex digits in the 1st string is `0019` whose decimal equivalent is `25`. This maps to glyph `த`.
 
-In order to use this font `t42`, each string (created from character set of a `ttf`) should be converted into hex string which is practically impossible and therefore this font becomes futile.
+In order to use this font `t42`, each string (created from character set of a `ttf`) should be converted into hexadecimal string by hand which is practically impossible and therefore this font becomes futile.
 
 Now consider the following C++ code that generates a postscript program called `myNotoTamil.ps` that accesses `t42` font through postscript's `findfont` operator.
 

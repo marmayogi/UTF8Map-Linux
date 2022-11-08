@@ -7,7 +7,15 @@
 ##### Description
 This standalone utility, written in C++, utilizes `t42` font (Type 0 Composite font with CIDFontType 2 and Type 42 base font) in order to generate `Hexadecimal` strings from `UTF-8` encoded strings required by Postscript's `show` operator. Bear in mind that the `t42` has been converted from a TrueType font. You need this conversion because without this conversion, a postscript program can't access a truetype font!
 
-The CIDMap of `t42` font enforces an identity mapping i.e. character code 0 maps to Glyph index 0, character code 1 maps to Glyph index 1 and so on. It is clearly evident that there is no unicode involved in this mapping. To understand concretely, edit the following postscript program `tamil.ps` that accesses `t42` font through postscript's `findfont` operator.
+The CIDMap of `t42` font enforces an identity mapping as follows:
+```
+character code 0 maps to Glyph index 0
+character code 1 maps to Glyph index 1
+character code 2 maps to Glyph index 2
+......
+character code NumGlyphs-1 maps to Glyph index NumGlyphs-1
+```
+It is clearly evident that there is no unicode involved in this mapping. To understand concretely, edit the following postscript program `tamil.ps` that accesses `t42` font through postscript's `findfont` operator.
 
 ```
 %!PS-Adobe-3.0

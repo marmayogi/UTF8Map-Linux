@@ -541,8 +541,6 @@ void generatePostscriptTamil(FILE *fps, const ELang pLan, const EMyFont pMyFont)
 	//printf("lan=%d myfont=%d %s\n", (int)pLan, (int)pMyFont, asMyFont[(int)pLan][(int)pMyFont].name);
 
 	fprintf(fps, "15 %s\n", asMyFont[(int)pLan][(int)pMyFont].name);		// findfont
-	goto Label_Skip;
-Label_Skip:
 	fprintf(fps, "150 775 moveto <%s> show\n", strps(pLan, pMyFont, u8"தமிழ் மொழி தங்களை வரவேற்கிறது!", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
 	fprintf(fps, "13 %s\n", asMyFont[(int)pLan][(int)pMyFont].name);		// findfont
 	fprintf(fps, "180 755 moveto <%s> show\n", strps(pLan, pMyFont, u8"Tamil Language Weclomes You!", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.

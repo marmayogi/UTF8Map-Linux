@@ -549,7 +549,7 @@ void generatePostscriptTamil(FILE *fps, const ELang pLan, const EMyFont pMyFont)
 	fprintf(fps, "13 %s\n", asMyFont[(int)pLan][(int)pMyFont].name);		// findfont
 	fprintf(fps, "32 740 moveto %d 0 rlineto stroke\n", 548);									// Horizontal line
 	fprintf(fps, "32 720 moveto <%s> show\n", strps(pLan, pMyFont, u8"உயிர் எழுத்துக்கள் (Vowels): ", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
-	fprintf(fps, "50 700 moveto <%s> show\n", strps(pLan, pMyFont, u8"அ ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
+	fprintf(fps, "50 700 moveto <%s> show\n", strps(pLan, pMyFont, u8"அ ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ ஃ", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
 
 	fprintf(fps, "32 670 moveto <%s> show\n", strps(pLan, pMyFont, u8"மெய் எழுத்துக்கள் (Consonants): ", bufCharCode, lcCharCodeBufSize));	// List of Consonants.
 	fprintf(fps, "50 650 moveto <%s> show\n", strps(pLan, pMyFont, u8"க் ங் ச் ஞ் ட் ண் த் ந் ன் ப் ம் ய் ர் ற் ல் ள் ழ் வ் ஶ் ஜ் ஷ் ஸ் ஹ் க்ஷ்", bufCharCode, lcCharCodeBufSize));	// Consonants.

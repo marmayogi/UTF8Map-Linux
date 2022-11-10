@@ -194,7 +194,7 @@ Invoke Ghostscript to execute postscript program `myNotoTamil.ps` as follows:
 
 Ghostscript displays the following output in a single page:
 - A welcome message in Tamil and English.
-- List of Vowels (12 Glyphs). All of them are associated with Unicode Points.
+- List of Vowels (12 + 1 Glyphs). All of them are associated with Unicode Points.
 - List of Consonants (18 + 6 = 24 Glyphs). No Unicode Points.
 - List of combined glyphs (Combination of Vowels + Consonants) in 24 lines. Each line displays 12 glyphs. Out of 288 Glyphs, 24 are associated with Unicode Points and rest do not.
 - List of Numbers in two lines. All 13 Glyphs for Tamil numbers are associated with Unicode Points.

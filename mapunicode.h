@@ -1,7 +1,7 @@
 #ifndef MAPUNICODE_H
 
 //
-// This Program (Maping UTF-8 to Character Code) program was written by Marmayogi, Astrologer and Palmist, Sri Mahakali Jyothida Nilayam, Coimbatore, India.
+// This Program was written by Marmayogi, Astrologer and Palmist, Sri Mahakali Jyothida Nilayam, Coimbatore, India.
 // This maps utf-8 encoded string to Postscript character code (16 bit) in hexadecimal format.
 // 
 // Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.

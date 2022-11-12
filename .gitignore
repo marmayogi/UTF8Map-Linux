@@ -1,0 +1,8 @@
+# .gitignore
+ 
+main.o
+utf8map.exe
+utf8map
+*~
+*.swp
+README.md-*.*

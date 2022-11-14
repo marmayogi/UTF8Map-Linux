@@ -9,7 +9,7 @@
 #	or
 #	$ make all
 #		
-# 	The above commands will create "UTF8Map" which is an executable binary file.
+# 	The above commands will create "utf8map" which is an executable binary file.
 #
 # Usage-2:
 #	Invocation of make from terminal, with a command line argument "clean", as follows:
@@ -17,16 +17,12 @@
 #	$ make clean
 #		
 # 	This will delete the following:
-#		- UTF8Map executable binary
+#		- utf8map executable binary
 #		- main.o
 #
 # --------------------------------------------------------------------
 
-#all: UTF8Map
-
 objects = main.o
-
-
 CC = g++
 CFLAGS  = -g -Wall
 
@@ -39,4 +35,4 @@ main.o: main.cpp mapunicode.h
 	$(CC) $(CFLAGS) -c main.cpp
 
 clean:
-	@rm UTF8Map $(objects)
+	@rm utf8map $(objects)

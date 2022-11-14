@@ -162,11 +162,11 @@ short up2cid(const ELang pLan, const EMyFont pMyFont, const uint32_t pUnicodeQua
 				case EMyFont::eNoToSansTamil_Bold:					// Google's Tamil Font (Bold)
 				{
 					uint16_t cid_1;																		// CID corresponding to unicode point pUnicodeQuad[0].
-					const uint16_t lcOffset_BasicLatin = 272;											// Basic Latin Offset w.r.t. aLathaTamilMap.
-					const uint16_t lcOffset_Latin_1_Supplement = 400;									// Latin-1 Supplement Offset w.r.t. aLathaTamilMap.
-					const uint16_t lcOffset_Latin_Extended_A = 528;										// Latin Extended-A Offset w.r.t. aLathaTamilMap.
-					const uint16_t lcOffset_General_Punctuation = 656;									// General Punctuation Offset w.r.t. aLathaTamilMap.
-					const uint16_t lcOffset_Currency_Symbols = 768;										// Currency Symbols Offset w.r.t. aLathaTamilMap.
+					const uint16_t lcOffset_BasicLatin = 272;											// Basic Latin Offset w.r.t. aNotoSansTamilMap.
+					const uint16_t lcOffset_Latin_1_Supplement = 400;									// Latin-1 Supplement Offset w.r.t. aNotoSansTamilMap.
+					const uint16_t lcOffset_Latin_Extended_A = 528;										// Latin Extended-A Offset w.r.t. aNotoSansTamilMap.
+					const uint16_t lcOffset_General_Punctuation = 656;									// General Punctuation Offset w.r.t. aNotoSansTamilMap.
+					const uint16_t lcOffset_Currency_Symbols = 768;										// Currency Symbols Offset w.r.t. aNotoSansTamilMap.
 					const uint16_t lcOffset_Tamil_Ligature=128;											// Tamil_Ligature Characters Offset w.r.t. aNotoSansTamilMap.
 					const uint16_t lcOffset_கி = lcOffset_Tamil_Ligature + 32;							// Offset w.r.t. aNotoSansTamilMap.
 					const uint16_t lcCID_க = 18;														// CID for glyph க (U+0B95).

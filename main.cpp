@@ -144,7 +144,7 @@ short up2cid(const ELang pLan, const EMyFont pMyFont, const uint32_t pUnicodeQua
 	//    Suppose first unicode point is a vowel or Latin character, then this array will pass out only one CID.
 	//    For ligatures, upto 3 CIDs will be passed out.
 	// 
-	// This function returns number of CIDs passed out through parameter pCID. This varies between 1 and 4.
+	// This function returns number of CIDs passed out through parameter pCID. This varies between 1 and 3.
 	//
 
 	if (pLan < ELang::eEnglish || pLan > aLanguage[cMaxLanguage]) return 0;		// Language is out of bounds.

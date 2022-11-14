@@ -21,12 +21,11 @@
 #		- main.o
 #
 # --------------------------------------------------------------------
+all: UTF8Map
 
 objects = main.o
 CC = g++
 CFLAGS  = -g -Wall
-
-all: UTF8Map
 
 UTF8Map:  $(objects)
 	$(CC) $(CFLAGS) -o utf8map $(objects)

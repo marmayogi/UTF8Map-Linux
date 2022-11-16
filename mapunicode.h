@@ -57,21 +57,23 @@ static const SUnicodeBlock aUnicode[cMaxLanguage + 1] = {
 	{ELang::eAssamese,	0x0980, 0x09FF},		// Same as Bengali
 };
 
-typedef struct SMyFont {
+typedef struct SFont {
 	short numGlyphs;							// total glyphs in the character set.
 	const char *name;							// 'myNotoTamil' is the font name as indicated in Postscript procedure: /myNotoTamil {/NotoSansTamil-Regular findfont exch scalefont setfont} bind def
 	const char *psname;							// Postscript font name.
 	const char *fname;							// File name of the font in the disk.
-} SMyFont;
+} SFont;
 
-enum class EMyFont : char {
+enum class EFont : char {
 	eZero = 0,
+	// 2. Tamil language.
 	eNoToSansTamil_Regular=1,			// Google's Tamil Font (Regular)
 	eNoToSansTamil_Bold=2,				// Google's Tamil Font (Bold)
 	eLatha_Regular=3,					// Microsoft's Tamil Font (Regular)
 	eLatha_Bold=4,						// Microsoft's Tamil Font (Bold)
+	// 3. Hindi language.
 };
-static const SMyFont asMyFont[cMaxLanguage + 1][10+2] = {		// Maximum 10 font files for each language are supported. If more files are there then change the number 10.
+static const SFont aFont[cMaxLanguage + 1][10+2] = {		// Maximum 10 font files for each language are supported. If more files are there then change the number 10.
 	{0,},
 	// 1. English language. Entires are not allowed since this is meant for Indian Languages.
 	{0,},											

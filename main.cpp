@@ -122,7 +122,7 @@ void psInitNextPage(FILE* fps, const int pPageOrdinal)
 {
     fprintf(fps, "%sPage: Marmayogi %4d\n", "%%", pPageOrdinal);		// page number is made up of a label and an ordinal number
 }
-short up2cid(const ELang pLan, const EMyFont pMyFont, const uint32_t pUnicodeQuad[4], short &pCntUnicode, uint16_t pCID[3])	// Transform Unicode to Postscript character code (2 bytes CID) for Type 42 base font based on Language.
+short up2cid(const ELang pLan, const EFont pFont, const uint32_t pUnicodeQuad[4], short &pCntUnicode, uint16_t pCID[3])	// Transform Unicode to Postscript character code (2 bytes CID) for Type 42 base font based on Language.
 {
 	//
 	// This function transforms Unicode Points to Postcript character identifiers (2 bytes CID).
@@ -130,7 +130,7 @@ short up2cid(const ELang pLan, const EMyFont pMyFont, const uint32_t pUnicodeQua
 	// This function is called by strps().
 	//
 	// 1) pLan is an input parameter of type ELang supplying language of the Font.
-	// 2) pMyFont is an input parameter of type EMyFont indicating name of the font.
+	// 2) pFont is an input parameter of type EMyFont indicating name of the font.
 	//    For example, Noto font, Vijaya font, Nirala font, etc.
 	// 3) pUnicodeQuad is an input array parameter with cells 4. This supplies atmost a quad of consecutive unicode points.
 	//    If first unicode point is not a ligature or conjunct, then second unicode point will not be used.
@@ -148,7 +148,7 @@ short up2cid(const ELang pLan, const EMyFont pMyFont, const uint32_t pUnicodeQua
 	//
 
 	if (pLan < ELang::eEnglish || pLan > aLanguage[cMaxLanguage]) return 0;		// Language is out of bounds.
-	if (!asMyFont[(int)pLan][(int)pMyFont].numGlyphs) return 0;					// Font is not present in CID-Keyed font list.
+	if (!aFont[(int)pLan][(int)pFont].numGlyphs) return 0;					// Font is not present in CID-Keyed font list.
 
 	//printf("Entering.......pUnicodeQuad[0]=0x%04X\n", pUnicodeQuad[0]);
 	//for (short kk = 0; kk < pCntUnicode; kk++) { printf("\tuni[%d]=0X%04x", kk, pUnicodeQuad[kk]); }  printf("\n"); //getchar();
@@ -157,9 +157,9 @@ short up2cid(const ELang pLan, const EMyFont pMyFont, const uint32_t pUnicodeQua
 	switch (pLan) {
 		case ELang::eTamil:					//  2. Tamil language
 		{
-			switch (pMyFont) {
-				case EMyFont::eNoToSansTamil_Regular:				// Google's Tamil Font (Regular)
-				case EMyFont::eNoToSansTamil_Bold:					// Google's Tamil Font (Bold)
+			switch (pFont) {
+				case EFont::eNoToSansTamil_Regular:				// Google's Tamil Font (Regular)
+				case EFont::eNoToSansTamil_Bold:					// Google's Tamil Font (Bold)
 				{
 					uint16_t cid_1;																		// CID corresponding to unicode point pUnicodeQuad[0].
 					const uint16_t lcOffset_BasicLatin = 272;											// Basic Latin Offset w.r.t. aNotoSansTamilMap.
@@ -269,8 +269,8 @@ short up2cid(const ELang pLan, const EMyFont pMyFont, const uint32_t pUnicodeQua
 					}
 					break;
 				}
-				case EMyFont::eLatha_Regular:				// Microsoft's Tamil Font (Regular)
-				case EMyFont::eLatha_Bold:					// Microsoft's Tamil Font (Bold)
+				case EFont::eLatha_Regular:				// Microsoft's Tamil Font (Regular)
+				case EFont::eLatha_Bold:					// Microsoft's Tamil Font (Bold)
 				default:
 				{	
 					uint16_t cid_1;																		// CID corresponding to unicode point pUnicodeQuad[0].
@@ -441,14 +441,14 @@ short up2cid(const ELang pLan, const EMyFont pMyFont, const uint32_t pUnicodeQua
 	}
 	return cntCID;
 }
-char* strps(const ELang pLan, const EMyFont pMyFont, const char* pUTF8InString, char* pPSOutString, const unsigned short pPSOutputStringSize)		// convert utf-8 string to Postscript character code string.
+char* strps(const ELang pLan, const EFont pFont, const char* pUTF8InString, char* pPSOutString, const unsigned short pPSOutputStringSize)		// convert utf-8 string to Postscript character code string.
 {
 	//
 	// This functions maps utf-8 encoded string to Postscript character code (16 bit) whose range will be between 0 to NumGlyphs-1.
 	// This function finally passes out character codes in hexadecimal format corresponding to the UTF-8 encoded string.
 	// 
 	// 1) pLan is an input parameter of type ELang supplying language of the Font.
-	// 2) pMyFont is an input parameter of type EMyFont indicating name of the font.
+	// 2) pFont is an input parameter of type EMyFont indicating name of the font.
 	//    For example, Noto font, Vijaya font, Nirala font, etc.
 	// 3) pUTF8InString is an input array parameter of type char that carries UTF-8 encoded string terminated with NULL byte.
 	// 4) pPSOutString is an output array parameter of type char that passes out Postscript chracter Codes in Hexadecimal format corresponding to UTF-8 encoded string.
@@ -463,7 +463,7 @@ char* strps(const ELang pLan, const EMyFont pMyFont, const char* pUTF8InString, 
 	if (pLan < ELang::eEnglish || pLan > aLanguage[cMaxLanguage]) {			// Language is out of bounds.
 		return pPSOutString;		// Return NULL terminated string.
 	}
-	if (!asMyFont[(int)pLan][(int)pMyFont].numGlyphs) {						// Font is not present in CID-Keyed font list.
+	if (!aFont[(int)pLan][(int)pFont].numGlyphs) {						// Font is not present in CID-Keyed font list.
 		return pPSOutString;		// Return NULL terminated string.
 	}
 	if (pLan == ELang::eEnglish) {
@@ -514,7 +514,7 @@ char* strps(const ELang pLan, const EMyFont pMyFont, const char* pUTF8InString, 
 	Label_Repeat:
 		//printf("before: ii=%d cnt=%d\n", (short)ii, cntUnicode);
 		const short cntUnicodeSave = cntUnicode;									// Take a copy.
-		const short cntCID = up2cid(pLan, pMyFont, unicodeQuad, cntUnicode, cid);	// Count of CIDs present in the cid array. This value could be either 1, 2, 3 or 4.
+		const short cntCID = up2cid(pLan, pFont, unicodeQuad, cntUnicode, cid);	// Count of CIDs present in the cid array. This value could be either 1, 2, 3 or 4.
 		if (!cntCID) break;															// Error. Mostly pFontName does not match with registered font names.
 		for (short kk = 0; kk < cntCID; kk++) {
 			if ((len + 2) >= pPSOutputStringSize) break;					// Insufficient pPSOutputStringSize to store character code. Stop processing and return already processed string.
@@ -533,58 +533,58 @@ char* strps(const ELang pLan, const EMyFont pMyFont, const char* pUTF8InString, 
 	}
 	return pPSOutString;
 }
-void generatePostscriptTamil(FILE *fps, const ELang pLan, const EMyFont pMyFont)
+void generatePostscriptTamil(FILE *fps, const ELang pLan, const EFont pFont)
 {
 	int pagenum = 0;                                                // Initialize page numbers.
 	const short lcCharCodeBufSize = 5000;		// Character Code buffer size.
 	char bufCharCode[lcCharCodeBufSize];		// buffer to hold hex string.
-	//printf("lan=%d myfont=%d %s\n", (int)pLan, (int)pMyFont, asMyFont[(int)pLan][(int)pMyFont].name);
+	//printf("lan=%d myfont=%d %s\n", (int)pLan, (int)pFont, aFont[(int)pLan][(int)pFont].name);
 
-	fprintf(fps, "15 %s\n", asMyFont[(int)pLan][(int)pMyFont].name);		// findfont
-	fprintf(fps, "150 775 moveto <%s> show\n", strps(pLan, pMyFont, u8"தமிழ் மொழி தங்களை வரவேற்கிறது!", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
-	fprintf(fps, "13 %s\n", asMyFont[(int)pLan][(int)pMyFont].name);		// findfont
-	fprintf(fps, "180 755 moveto <%s> show\n", strps(pLan, pMyFont, u8"Tamil Language Weclomes You!", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
-	fprintf(fps, "10 %s\n", asMyFont[(int)pLan][(int)pMyFont].name);		// findfont
-	fprintf(fps, "32 745 moveto <%s> show\n", strps(pLan, pMyFont, asMyFont[(int)pLan][(int)pMyFont].fname, bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
-	fprintf(fps, "13 %s\n", asMyFont[(int)pLan][(int)pMyFont].name);		// findfont
+	fprintf(fps, "15 %s\n", aFont[(int)pLan][(int)pFont].name);		// findfont
+	fprintf(fps, "150 775 moveto <%s> show\n", strps(pLan, pFont, u8"தமிழ் மொழி தங்களை வரவேற்கிறது!", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
+	fprintf(fps, "13 %s\n", aFont[(int)pLan][(int)pFont].name);		// findfont
+	fprintf(fps, "180 755 moveto <%s> show\n", strps(pLan, pFont, u8"Tamil Language Weclomes You!", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
+	fprintf(fps, "10 %s\n", aFont[(int)pLan][(int)pFont].name);		// findfont
+	fprintf(fps, "32 745 moveto <%s> show\n", strps(pLan, pFont, aFont[(int)pLan][(int)pFont].fname, bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
+	fprintf(fps, "13 %s\n", aFont[(int)pLan][(int)pFont].name);		// findfont
 	fprintf(fps, "32 740 moveto %d 0 rlineto stroke\n", 548);									// Horizontal line
-	fprintf(fps, "32 720 moveto <%s> show\n", strps(pLan, pMyFont, u8"உயிர் எழுத்துக்கள் (Vowels): ", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
-	fprintf(fps, "50 700 moveto <%s> show\n", strps(pLan, pMyFont, u8"அ ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ ஃ", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
+	fprintf(fps, "32 720 moveto <%s> show\n", strps(pLan, pFont, u8"உயிர் எழுத்துக்கள் (Vowels): ", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
+	fprintf(fps, "50 700 moveto <%s> show\n", strps(pLan, pFont, u8"அ ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ ஃ", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
 
-	fprintf(fps, "32 670 moveto <%s> show\n", strps(pLan, pMyFont, u8"மெய் எழுத்துக்கள் (Consonants): ", bufCharCode, lcCharCodeBufSize));	// List of Consonants.
-	fprintf(fps, "50 650 moveto <%s> show\n", strps(pLan, pMyFont, u8"க் ங் ச் ஞ் ட் ண் த் ந் ன் ப் ம் ய் ர் ற் ல் ள் ழ் வ் ஶ் ஜ் ஷ் ஸ் ஹ் க்ஷ்", bufCharCode, lcCharCodeBufSize));	// Consonants.
+	fprintf(fps, "32 670 moveto <%s> show\n", strps(pLan, pFont, u8"மெய் எழுத்துக்கள் (Consonants): ", bufCharCode, lcCharCodeBufSize));	// List of Consonants.
+	fprintf(fps, "50 650 moveto <%s> show\n", strps(pLan, pFont, u8"க் ங் ச் ஞ் ட் ண் த் ந் ன் ப் ம் ய் ர் ற் ல் ள் ழ் வ் ஶ் ஜ் ஷ் ஸ் ஹ் க்ஷ்", bufCharCode, lcCharCodeBufSize));	// Consonants.
 
-	fprintf(fps, "32 620 moveto <%s> show\n", strps(pLan, pMyFont, u8"உயிர்மெய் எழுத்துக்கள் (Vowels+Consonants): ", bufCharCode, lcCharCodeBufSize));	// List of Combined letters.
-	fprintf(fps, "50 600 moveto <%s> show\n", strps(pLan, pMyFont, u8"க கா கி கீ கு கூ கெ கே கை கொ கோ கௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 580 moveto <%s> show\n", strps(pLan, pMyFont, u8"ங ஙா ஙி ஙீ ஙு ஙூ ஙெ ஙே ஙை ஙொ ஙோ ஙௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 560 moveto <%s> show\n", strps(pLan, pMyFont, u8"ச சா சி சீ சு சூ செ சே சை சொ சோ சௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 540 moveto <%s> show\n", strps(pLan, pMyFont, u8"ஞ ஞா ஞி ஞீ ஞு ஞூ ஞெ ஞே ஞை ஞொ ஞோ ஞௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 520 moveto <%s> show\n", strps(pLan, pMyFont, u8"ட டா டி டீ டு டூ டெ டே டை டொ டோ டௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 500 moveto <%s> show\n", strps(pLan, pMyFont, u8"ண ணா ணி ணீ ணு ணூ ணெ ணே ணை ணொ ணோ ணௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 480 moveto <%s> show\n", strps(pLan, pMyFont, u8"த தா தி தீ து தூ தெ தே தை தொ தோ தௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 460 moveto <%s> show\n", strps(pLan, pMyFont, u8"ந நா நி நீ நு நூ நெ நே நை நொ நோ நௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 440 moveto <%s> show\n", strps(pLan, pMyFont, u8"ப பா பி பீ பு பூ பெ பே பை பொ போ பௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 420 moveto <%s> show\n", strps(pLan, pMyFont, u8"ம மா மி மீ மு மூ மெ மே மை மொ மோ மௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 400 moveto <%s> show\n", strps(pLan, pMyFont, u8"ய யா யி யீ யு யூ யெ யே யை யொ யோ யௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 380 moveto <%s> show\n", strps(pLan, pMyFont, u8"ர ரா ரி ரீ ரு ரூ ரெ ரே ரை ரொ ரோ ரௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 360 moveto <%s> show\n", strps(pLan, pMyFont, u8"ல லா லி லீ லு லூ லெ லே லை லொ லோ லௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 340 moveto <%s> show\n", strps(pLan, pMyFont, u8"வ வா வி வீ வு வூ வெ வே வை வொ வோ வௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 320 moveto <%s> show\n", strps(pLan, pMyFont, u8"ழ ழா ழி ழீ ழு ழூ ழெ ழே ழை ழொ ழோ ழௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 300 moveto <%s> show\n", strps(pLan, pMyFont, u8"ள ளா ளி ளீ ளு ளூ ளெ ளே ளை ளொ ளோ ளௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 280 moveto <%s> show\n", strps(pLan, pMyFont, u8"ற றா றி றீ று றூ றெ றே றை றொ றோ றௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 260 moveto <%s> show\n", strps(pLan, pMyFont, u8"ன னா னி னீ னு னூ னெ னே னை னொ னோ னௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 240 moveto <%s> show\n", strps(pLan, pMyFont, u8"ஶ ஶா ஶி ஶீ ஶு ஶூ ஶெ ஶே ஶை ஶொ ஶோ ஶௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 220 moveto <%s> show\n", strps(pLan, pMyFont, u8"ஜ ஜா ஜி ஜீ ஜு ஜூ ஜெ ஜே ஜை ஜொ ஜோ ஜௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 200 moveto <%s> show\n", strps(pLan, pMyFont, u8"ஷ ஷா ஷி ஷீ ஷு ஷூ ஷெ ஷே ஷை ஷொ ஷோ ஷௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 180 moveto <%s> show\n", strps(pLan, pMyFont, u8"ஸ ஸா ஸி ஸீ ஸு ஸூ ஸெ ஸே ஸை ஸொ ஸோ ஸௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 160 moveto <%s> show\n", strps(pLan, pMyFont, u8"ஹ ஹா ஹி ஹீ ஹு ஹூ ஹெ ஹே ஹை ஹொ ஹோ ஹௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
-	fprintf(fps, "50 140 moveto <%s> show\n", strps(pLan, pMyFont, u8"க்ஷ க்ஷா க்ஷி க்ஷீ க்ஷு க்ஷூ க்ஷெ க்ஷே க்ஷை க்ஷொ க்ஷோ க்ஷௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
+	fprintf(fps, "32 620 moveto <%s> show\n", strps(pLan, pFont, u8"உயிர்மெய் எழுத்துக்கள் (Vowels+Consonants): ", bufCharCode, lcCharCodeBufSize));			// List of Combined letters.
+	fprintf(fps, "50 600 moveto <%s> show\n", strps(pLan, pFont, u8"க கா கி கீ கு கூ கெ கே கை கொ கோ கௌ", bufCharCode, lcCharCodeBufSize));			// Combine letters.
+	fprintf(fps, "50 580 moveto <%s> show\n", strps(pLan, pFont, u8"ங ஙா ஙி ஙீ ஙு ஙூ ஙெ ஙே ஙை ஙொ ஙோ ஙௌ", bufCharCode, lcCharCodeBufSize));		// Combine letters.
+	fprintf(fps, "50 560 moveto <%s> show\n", strps(pLan, pFont, u8"ச சா சி சீ சு சூ செ சே சை சொ சோ சௌ", bufCharCode, lcCharCodeBufSize));			// Combine letters.
+	fprintf(fps, "50 540 moveto <%s> show\n", strps(pLan, pFont, u8"ஞ ஞா ஞி ஞீ ஞு ஞூ ஞெ ஞே ஞை ஞொ ஞோ ஞௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
+	fprintf(fps, "50 520 moveto <%s> show\n", strps(pLan, pFont, u8"ட டா டி டீ டு டூ டெ டே டை டொ டோ டௌ", bufCharCode, lcCharCodeBufSize));			// Combine letters.
+	fprintf(fps, "50 500 moveto <%s> show\n", strps(pLan, pFont, u8"ண ணா ணி ணீ ணு ணூ ணெ ணே ணை ணொ ணோ ணௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
+	fprintf(fps, "50 480 moveto <%s> show\n", strps(pLan, pFont, u8"த தா தி தீ து தூ தெ தே தை தொ தோ தௌ", bufCharCode, lcCharCodeBufSize));			// Combine letters.
+	fprintf(fps, "50 460 moveto <%s> show\n", strps(pLan, pFont, u8"ந நா நி நீ நு நூ நெ நே நை நொ நோ நௌ", bufCharCode, lcCharCodeBufSize));			// Combine letters.
+	fprintf(fps, "50 440 moveto <%s> show\n", strps(pLan, pFont, u8"ப பா பி பீ பு பூ பெ பே பை பொ போ பௌ", bufCharCode, lcCharCodeBufSize));			// Combine letters.
+	fprintf(fps, "50 420 moveto <%s> show\n", strps(pLan, pFont, u8"ம மா மி மீ மு மூ மெ மே மை மொ மோ மௌ", bufCharCode, lcCharCodeBufSize));		// Combine letters.
+	fprintf(fps, "50 400 moveto <%s> show\n", strps(pLan, pFont, u8"ய யா யி யீ யு யூ யெ யே யை யொ யோ யௌ", bufCharCode, lcCharCodeBufSize));		// Combine letters.
+	fprintf(fps, "50 380 moveto <%s> show\n", strps(pLan, pFont, u8"ர ரா ரி ரீ ரு ரூ ரெ ரே ரை ரொ ரோ ரௌ", bufCharCode, lcCharCodeBufSize));				// Combine letters.
+	fprintf(fps, "50 360 moveto <%s> show\n", strps(pLan, pFont, u8"ல லா லி லீ லு லூ லெ லே லை லொ லோ லௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
+	fprintf(fps, "50 340 moveto <%s> show\n", strps(pLan, pFont, u8"வ வா வி வீ வு வூ வெ வே வை வொ வோ வௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
+	fprintf(fps, "50 320 moveto <%s> show\n", strps(pLan, pFont, u8"ழ ழா ழி ழீ ழு ழூ ழெ ழே ழை ழொ ழோ ழௌ", bufCharCode, lcCharCodeBufSize));		// Combine letters.
+	fprintf(fps, "50 300 moveto <%s> show\n", strps(pLan, pFont, u8"ள ளா ளி ளீ ளு ளூ ளெ ளே ளை ளொ ளோ ளௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
+	fprintf(fps, "50 280 moveto <%s> show\n", strps(pLan, pFont, u8"ற றா றி றீ று றூ றெ றே றை றொ றோ றௌ", bufCharCode, lcCharCodeBufSize));		// Combine letters.
+	fprintf(fps, "50 260 moveto <%s> show\n", strps(pLan, pFont, u8"ன னா னி னீ னு னூ னெ னே னை னொ னோ னௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
+	fprintf(fps, "50 240 moveto <%s> show\n", strps(pLan, pFont, u8"ஶ ஶா ஶி ஶீ ஶு ஶூ ஶெ ஶே ஶை ஶொ ஶோ ஶௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
+	fprintf(fps, "50 220 moveto <%s> show\n", strps(pLan, pFont, u8"ஜ ஜா ஜி ஜீ ஜு ஜூ ஜெ ஜே ஜை ஜொ ஜோ ஜௌ", bufCharCode, lcCharCodeBufSize));		// Combine letters.
+	fprintf(fps, "50 200 moveto <%s> show\n", strps(pLan, pFont, u8"ஷ ஷா ஷி ஷீ ஷு ஷூ ஷெ ஷே ஷை ஷொ ஷோ ஷௌ", bufCharCode, lcCharCodeBufSize));		// Combine letters.
+	fprintf(fps, "50 180 moveto <%s> show\n", strps(pLan, pFont, u8"ஸ ஸா ஸி ஸீ ஸு ஸூ ஸெ ஸே ஸை ஸொ ஸோ ஸௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
+	fprintf(fps, "50 160 moveto <%s> show\n", strps(pLan, pFont, u8"ஹ ஹா ஹி ஹீ ஹு ஹூ ஹெ ஹே ஹை ஹொ ஹோ ஹௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
+	fprintf(fps, "50 140 moveto <%s> show\n", strps(pLan, pFont, u8"க்ஷ க்ஷா க்ஷி க்ஷீ க்ஷு க்ஷூ க்ஷெ க்ஷே க்ஷை க்ஷொ க்ஷோ க்ஷௌ", bufCharCode, lcCharCodeBufSize));	// Combine letters.
 
-	fprintf(fps, "32 110 moveto <%s> show\n", strps(pLan, pMyFont, u8"எண்கள் (Numbers): ", bufCharCode, lcCharCodeBufSize));	// List of Consonants.
-	fprintf(fps, "50 90 moveto <%s> show\n", strps(pLan, pMyFont, u8"௦ 1 2  3  4  5  6  7  8  9  10 11  12   13  14   15   16   17  18   19    20", bufCharCode, lcCharCodeBufSize));	// Consonants.
-	fprintf(fps, "50 70 moveto <%s> show\n", strps(pLan, pMyFont, u8"௦ ௧ ௨ ௩ ௪ ௫ ௬ ௭ ௮ ௯ ௰ ௰௧ ௰௨ ௰௩ ௰௪ ௰௫ ௰௬ ௰௭ ௰௮ ௰௯ ௨௰", bufCharCode, lcCharCodeBufSize));	// Consonants.
-	fprintf(fps, "50 50 moveto <%s> show\n", strps(pLan, pMyFont, u8"9௦     100   1,000  100,000   1 million    1 trillion", bufCharCode, lcCharCodeBufSize));	// Consonants.
-	fprintf(fps, "50 30 moveto <%s> show\n", strps(pLan, pMyFont, u8"௯௰   ௱    ௲    ௱௲     ௲௲       ௲௲௲", bufCharCode, lcCharCodeBufSize));	// Consonants.
+	fprintf(fps, "32 110 moveto <%s> show\n", strps(pLan, pFont, u8"எண்கள் (Numbers): ", bufCharCode, lcCharCodeBufSize));	// List of Consonants.
+	fprintf(fps, "50 90 moveto <%s> show\n", strps(pLan, pFont, u8"௦ 1 2  3  4  5  6  7  8  9  10 11  12   13  14   15   16   17  18   19    20", bufCharCode, lcCharCodeBufSize));	// Consonants.
+	fprintf(fps, "50 70 moveto <%s> show\n", strps(pLan, pFont, u8"௦ ௧ ௨ ௩ ௪ ௫ ௬ ௭ ௮ ௯ ௰ ௰௧ ௰௨ ௰௩ ௰௪ ௰௫ ௰௬ ௰௭ ௰௮ ௰௯ ௨௰", bufCharCode, lcCharCodeBufSize));	// Consonants.
+	fprintf(fps, "50 50 moveto <%s> show\n", strps(pLan, pFont, u8"9௦     100   1,000  100,000   1 million    1 trillion", bufCharCode, lcCharCodeBufSize));	// Consonants.
+	fprintf(fps, "50 30 moveto <%s> show\n", strps(pLan, pFont, u8"௯௰   ௱    ௲    ௱௲     ௲௲       ௲௲௲", bufCharCode, lcCharCodeBufSize));	// Consonants.
 
 	psFlushReport(fps, ++pagenum);
 }
@@ -619,19 +619,19 @@ int main(int argc, char* argv[])
 	// find out the language and font 
 
 	ELang lan=ELang::eZero;								// Language of the cid-keyed font passed as argument.
-	EMyFont myfont= EMyFont::eZero;						// Font name.
+	EFont myfont= EFont::eZero;							// Font name.
 	short ii = static_cast<short>(ELang::eTamil);		// start from Tamil whose index is 2.
 	do {
 		short jj = 0;
-		while (asMyFont[ii][++jj].numGlyphs) {
-			if (!_stricmp(asMyFont[ii][jj].fname, cidFilenameNoPath)) {
-				myfont = static_cast<EMyFont>(jj);
+		while (aFont[ii][++jj].numGlyphs) {
+			if (!_stricmp(aFont[ii][jj].fname, cidFilenameNoPath)) {
+				myfont = static_cast<EFont>(jj);
 				lan = static_cast<ELang>(ii);
 			}
 		}
 	} while (++ii <= cMaxLanguage);
 
-	if (lan == ELang::eZero || myfont == EMyFont::eZero) {
+	if (lan == ELang::eZero || myfont == EFont::eZero) {
 		fprintf(stdout, "Font file '%s' is not found in the CID-Keyed font list.", strCIDFontFile);
 		fprintf(stdout, "\nhit any key....");	getchar();
 		return(1);				// exit with error 1
@@ -642,7 +642,7 @@ int main(int argc, char* argv[])
 	const char* psFilenameNoPath = getCIDfilenameWithoutPath(psFilename);						// Points to filename without path
 	short len = static_cast<short>(strlen(psFilename) - strlen(psFilenameNoPath));				// remaining length
 	short remainignlen = lcFileNameSize - len;													// remaining length
-	sprintf_s(psFilename+len, remainignlen, "%s.ps", asMyFont[(int)lan][(int)myfont].name);		// create postscript file name with extension .ps.
+	sprintf_s(psFilename+len, remainignlen, "%s.ps", aFont[(int)lan][(int)myfont].name);		// create postscript file name with extension .ps.
     //printf("%s...\t%s...\n", t42Filenamet, psFilename); getchar();
 
     FILE *fps;
@@ -668,7 +668,7 @@ int main(int argc, char* argv[])
 #endif
 
 	psInitPostscript(fps);				// Initialize postscript
-	fprintf(fps, "/%s {/%s findfont exch scalefont setfont} bind def\n", asMyFont[(int)lan][(int)myfont].name, asMyFont[(int)lan][(int)myfont].psname);		// findfont
+	fprintf(fps, "/%s {/%s findfont exch scalefont setfont} bind def\n", aFont[(int)lan][(int)myfont].name, aFont[(int)lan][(int)myfont].psname);		// findfont
 
 	switch (lan) {
 		case ELang::eTamil:					//  2. Tamil language

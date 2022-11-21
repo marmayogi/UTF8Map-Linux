@@ -1,1 +1,1 @@
-Did you test this postscript program? Are you sure that operator `stringwidth ` works with CID-Keyed fonts (converted from `ttf` related to Indian Languages) having glyphs exceed 256?
+UTF8Map-Linux

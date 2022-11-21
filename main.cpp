@@ -541,15 +541,15 @@ void generatePostscriptTamil(FILE *fps, const ELang pLan, const EFont pFont)
 	//printf("lan=%d myfont=%d %s\n", (int)pLan, (int)pFont, aFont[(int)pLan][(int)pFont].name);
 
 	fprintf(fps, "15 %s\n", aFont[(int)pLan][(int)pFont].name);		// findfont
-	fprintf(fps, "150 775 moveto <%s> show\n", strps(pLan, pFont, u8"தமிழ் மொழி தங்களை வரவேற்கிறது!", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
+	fprintf(fps, "0 775 594 <%s> CTXT\n", strps(pLan, pFont, u8"தமிழ் மொழி தங்களை வரவேற்கிறது!", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
 	fprintf(fps, "13 %s\n", aFont[(int)pLan][(int)pFont].name);		// findfont
-	fprintf(fps, "180 755 moveto <%s> show\n", strps(pLan, pFont, u8"Tamil Language Weclomes You!", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
+	fprintf(fps, "0 755 594 <%s> CTXT\n", strps(pLan, pFont, u8"Tamil Language Weclomes You!", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
 	fprintf(fps, "10 %s\n", aFont[(int)pLan][(int)pFont].name);		// findfont
-	fprintf(fps, "32 745 moveto <%s> show\n", strps(pLan, pFont, aFont[(int)pLan][(int)pFont].fname, bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
+	fprintf(fps, "32 745 moveto <%s> show\n", strps(pLan, pFont, aFont[(int)pLan][(int)pFont].fname, bufCharCode, lcCharCodeBufSize));	// Write filename.
 	fprintf(fps, "13 %s\n", aFont[(int)pLan][(int)pFont].name);		// findfont
 	fprintf(fps, "32 740 moveto %d 0 rlineto stroke\n", 548);									// Horizontal line
-	fprintf(fps, "32 720 moveto <%s> show\n", strps(pLan, pFont, u8"உயிர் எழுத்துக்கள் (Vowels): ", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
-	fprintf(fps, "50 700 moveto <%s> show\n", strps(pLan, pFont, u8"அ ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ ஃ", bufCharCode, lcCharCodeBufSize));	// Write title by centering at paper.
+	fprintf(fps, "32 720 moveto <%s> show\n", strps(pLan, pFont, u8"உயிர் எழுத்துக்கள் (Vowels): ", bufCharCode, lcCharCodeBufSize));	// Title Vowel.
+	fprintf(fps, "50 700 moveto <%s> show\n", strps(pLan, pFont, u8"அ ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ ஃ", bufCharCode, lcCharCodeBufSize));	// List of Vowels.
 
 	fprintf(fps, "32 670 moveto <%s> show\n", strps(pLan, pFont, u8"மெய் எழுத்துக்கள் (Consonants): ", bufCharCode, lcCharCodeBufSize));	// List of Consonants.
 	fprintf(fps, "50 650 moveto <%s> show\n", strps(pLan, pFont, u8"க் ங் ச் ஞ் ட் ண் த் ந் ன் ப் ம் ய் ர் ற் ல் ள் ழ் வ் ஶ் ஜ் ஷ் ஸ் ஹ் க்ஷ்", bufCharCode, lcCharCodeBufSize));	// Consonants.

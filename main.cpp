@@ -24,7 +24,7 @@ bool fileInsert(FILE* fps, const char* pFileToBeInserted)
 #if _MSC_VER			// Visual Studio
 	// open t42 file to read
 	if (fopen_s(&fp, pFileToBeInserted, "r")) {
-		fprintf(stdout, "File name: %s\n", pFileToBeInserted);
+		fprintf(stderr, "File name: %s\n", pFileToBeInserted);
 		perror("The following error occurred");
 		return (false);
 	}
@@ -32,7 +32,7 @@ bool fileInsert(FILE* fps, const char* pFileToBeInserted)
 #elif __GNUC__	|| __CYGWIN__		// gcc
 	// open t42 file to read
 	if (!(fp = fopen(pFileToBeInserted, "r"))) {
-		fprintf(stdout, "File name: %s\n", pFileToBeInserted);
+		fprintf(stderr, "File name: %s\n", pFileToBeInserted);
 		perror("The following error occurred");
 		return (false);
 	}
@@ -611,8 +611,8 @@ int main(int argc, char* argv[])
     const char* ptr;
     const char* strCIDFontFile = argv[1];       // ttf filename
     if (!(ptr = strstr(strCIDFontFile, ".t42"))) {
-        fprintf(stdout, "Input file '%s' does not have file extension 't42'.", strCIDFontFile);
-        fprintf(stdout, "\nhit any key....");	getchar();
+        fprintf(stderr, "Input file '%s' does not have file extension 't42'.", strCIDFontFile);
+        fprintf(stderr, "\nhit any key....");	getchar();
         return(1);				// exit with error 1
     }
 	const char *cidFilenameNoPath = getCIDfilenameWithoutPath(strCIDFontFile);		// Points to filename without path
@@ -632,8 +632,8 @@ int main(int argc, char* argv[])
 	} while (++ii <= cMaxLanguage);
 
 	if (lan == ELang::eZero || myfont == EFont::eZero) {
-		fprintf(stdout, "Font file '%s' is not found in the CID-Keyed font list.", strCIDFontFile);
-		fprintf(stdout, "\nhit any key....");	getchar();
+		fprintf(stderr, "Font file '%s' is not found in the CID-Keyed font list.", strCIDFontFile);
+		fprintf(stderr, "\nhit any key....");	getchar();
 		return(1);				// exit with error 1
 	}
     const short lcFileNameSize = 256;
@@ -650,7 +650,7 @@ int main(int argc, char* argv[])
 #if _MSC_VER			// Visual Studio
     // open ps file to write
     if (fopen_s(&fps, psFilename, "w")) {
-        fprintf(stdout, "File name: %s\n", psFilename);
+        fprintf(stderr, "File name: %s\n", psFilename);
         perror("The following error occurred");
         return (1);
     }
@@ -659,7 +659,7 @@ int main(int argc, char* argv[])
 #elif __GNUC__	|| __CYGWIN__		// gcc
     // open ps file to write
     if (!(fps = fopen(psFilename, "w"))) {
-        fprintf(stdout, "File name: %s\n", psFilename);
+        fprintf(stderr, "File name: %s\n", psFilename);
         perror("The following error occurred");
         return (1);
     }

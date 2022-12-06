@@ -177,9 +177,9 @@ The function **up2cid** adopts the following procedure to determine the CID from
 9. Finally Unicode Point of slot zero of quad array maps to a Vowel. Refer `main.cpp` and see the code.
  
 ##### Technical Features
-- This utility is a console application developed on Microsoft Visual Studio Community 2022 (64-bit) Edition- Version 17.3.5 under Windows 10.
-- Note that this program is 100% portable across Windows-10 and Linux. i.e. The source files (`main.ccp` and `mapunicode.h`) are same and identical across platforms.
-- In order to build this utility in Linux, the two source files (`main.cpp` and `mapunicode.h`) were copied to  `Ubuntu` Linux platform  and `dos2unix` was invoked to replace `CR-LF` with `LF`. A make file has been added up that builds the binary. A separate README.md was written and added in the folder. All four files have been checked in to GitHub.
+- This utility is a console application developed on Microsoft Visual Studio Community 2022 (64-bit) Edition- Version 17.4.2 under Windows 10.
+- Note that this program is 100% portable across Windows and Linux. i.e. The source files (`main.ccp` and `mapunicode.h`) are same and identical across platforms.
+- In order to build this utility in Linux, the two source files (`main.cpp` and `mapunicode.h`) were copied to  `Ubuntu` Linux platform  and `dos2unix` was invoked to replace `CR+LF` with `LF`. A `makefile` has been added up that builds the binary. A separate `README.md` was written and added in the folder. All four files have been checked into GitHub.
 - Ubuntu version is 20.04.5 LTS and Ghostsciprt version is 9.5. 
 
 ##### Usage

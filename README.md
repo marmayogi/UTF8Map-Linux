@@ -191,6 +191,7 @@ This command generates a postscript program `myNotoTamil.ps`.
 This command generates a postscript program `myLathaTamil.ps`. 
 
 Invoke Ghostscript to execute postscript program `myNotoTamil.ps` as follows:
+
     - `gs ~/cidfonts/NotoSansTamil-Regular.t42 ~/cidfonts/myNotoTamil.ps`
 
 Ghostscript displays the following output in a single page:
@@ -204,6 +205,7 @@ Ghostscript displays the following output in a single page:
 The above display helps to corroborate all the glyhps present in Tamil language. This does not include Latin and other glyphs found in the character set of `ttf` font.
 
 Now invoke Ghostscript to execute postscript program `myLathaTamil.ps` as follows:
+
     - `gs ~/cidfonts/latha.t42 ~/cidfonts/myLathaTamil.ps`
 
 Except shape of glyphs, Ghostscript displays output similar to the output for `myNotoTamil.ps`.

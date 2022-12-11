@@ -122,7 +122,7 @@ void psInitNextPage(FILE* fps, const int pPageOrdinal)
 {
     fprintf(fps, "%sPage: Marmayogi %4d\n", "%%", pPageOrdinal);		// page number is made up of a label and an ordinal number
 }
-short up2cid(const ELang pLan, const EFont pFont, const uint32_t pUnicodeQuad[4], short &pCntUnicode, uint16_t pCID[3])	// Transform Unicode to Postscript character code (2 bytes CID) for Type 42 base font based on Language.
+short up2cid(const ELang pLan, const EFont pFont, const uint32_t pUnicodeQuad[4], short &pCntUnicodeQuad, uint16_t pCID[3])	// Transform Unicode to Postscript character code (2 bytes CID) for Type 42 base font based on Language.
 {
 	//
 	// This function transforms Unicode Points to Postcript character identifiers (2 bytes CID).
@@ -137,7 +137,7 @@ short up2cid(const ELang pLan, const EFont pFont, const uint32_t pUnicodeQuad[4]
 	//    For example, if the first unicode point of the pair is a vowel, then next point will not be processed.
 	//    In Tamil Language, to process ஸ்ரீ, four unicode point are required.
 	//    In Tamil Language, to process க்ஷ, three unicode point are required.
-	// 4) pCntUnicode is an input/output reference parameter indicating the number of Unicodes points present in the parameter pUnicodeQuad.
+	// 4) pCntUnicodeQuad is an input/output reference parameter indicating the number of Unicodes points present in the parameter pUnicodeQuad.
 	//    i)  As an input parameter, it indicates the number of unicode points present in the parameter pUnicodeQuad. This value ranges between 1 and 4.
 	//    ii) As an output parameter, it passes out the number of Unicode points untouched in the parameter pUnicodeQuad. This value ranges between 0 and 3.
 	// 5) pCID is an output array with cells 3. This passes out atmost three CIDs.
@@ -151,7 +151,7 @@ short up2cid(const ELang pLan, const EFont pFont, const uint32_t pUnicodeQuad[4]
 	if (!aFont[(int)pLan][(int)pFont].numGlyphs) return 0;					// Font is not present in CID-Keyed font list.
 
 	//printf("Entering.......pUnicodeQuad[0]=0x%04X\n", pUnicodeQuad[0]);
-	//for (short kk = 0; kk < pCntUnicode; kk++) { printf("\tuni[%d]=0X%04x", kk, pUnicodeQuad[kk]); }  printf("\n"); //getchar();
+	//for (short kk = 0; kk < pCntUnicodeQuad; kk++) { printf("\tuni[%d]=0X%04x", kk, pUnicodeQuad[kk]); }  printf("\n"); //getchar();
 
 	short cntCID = 0;															// Number of CIDs passed out through parameter pCID. This varies between 1 and 4.
 	switch (pLan) {
@@ -177,69 +177,69 @@ short up2cid(const ELang pLan, const EFont pFont, const uint32_t pUnicodeQuad[4]
 					const uint16_t lcCID_ௗ = 54;														// CID for glyph ௗ (U+0BD7)
 					const uint16_t lcCID_ெ = 46;														// CID for glyph ெ (U+0BC6)
 					const uint16_t lcRangeOffset_1 = pUnicodeQuad[0] - aUnicode[(int)pLan].blockBeg;	// CID corresponding to unicode point pUnicodeQuad[0].
-					const uint16_t lcRangeOffset_2 = pCntUnicode > 1 ? pUnicodeQuad[1] - aUnicode[(int)pLan].blockBeg : 0;	// CID corresponding to unicode point pUnicodeQuad[1].
+					const uint16_t lcRangeOffset_2 = pCntUnicodeQuad > 1 ? pUnicodeQuad[1] - aUnicode[(int)pLan].blockBeg : 0;	// CID corresponding to unicode point pUnicodeQuad[1].
 					const bool isTamilBlock = pUnicodeQuad[0] >= aUnicode[(int)ELang::eTamil].blockBeg && pUnicodeQuad[0] < aUnicode[(int)ELang::eTamil].blockEnd;	// Tamil
 					const bool isBasicLatin = pUnicodeQuad[0] >= aUnicode[(int)ELang::eEng].blockBeg && pUnicodeQuad[0] < aUnicode[(int)ELang::eEng].blockEnd/2;	// Basic Latin
 					const bool isLatin_1_Supplement = pUnicodeQuad[0] >= 0x00A0 && pUnicodeQuad[0] <= 0x00FF;	// Latin-1 Supplement
 					const bool isLatin_Extended_A = pUnicodeQuad[0] >= 0x0100 && pUnicodeQuad[0] <= 0x017F;		// Latin Extended-A
 					const bool isGeneralPunctuation = pUnicodeQuad[0] >= 0x2000 && pUnicodeQuad[0] <= 0x206F;	// General Punctuation Block: U+2000 to U+206F
 					const bool isCurrencySymbol = pUnicodeQuad[0] >= 0x20A0 && pUnicodeQuad[0] <= 0x20CF;		// Currency Symbols Block: U+20A0 to U+20CF
-					const bool isக்ஷ = pCntUnicode > 2 && pUnicodeQuad[0] == 0x0B95 && pUnicodeQuad[1] == 0x0BCD && pUnicodeQuad[2] == 0x0BB7;	// க்ஷ Aksharam
-					const bool isஸ்ரீ = pCntUnicode == 4 && pUnicodeQuad[0] == 0x0BB8 && pUnicodeQuad[1] == 0x0BCD && pUnicodeQuad[2] == 0x0BB0 && pUnicodeQuad[3] == 0x0BC0;	// ஸ்ரீ Aksharam
+					const bool isக்ஷ = pCntUnicodeQuad > 2 && pUnicodeQuad[0] == 0x0B95 && pUnicodeQuad[1] == 0x0BCD && pUnicodeQuad[2] == 0x0BB7;	// க்ஷ Aksharam
+					const bool isஸ்ரீ = pCntUnicodeQuad == 4 && pUnicodeQuad[0] == 0x0BB8 && pUnicodeQuad[1] == 0x0BCD && pUnicodeQuad[2] == 0x0BB0 && pUnicodeQuad[3] == 0x0BC0;	// ஸ்ரீ Aksharam
 					const bool isconsonant = pUnicodeQuad[0] >= 0x0B95 && pUnicodeQuad[0] <= 0x0BB9;	// between க and ஹ
-					const bool isVowelSign_1 = pCntUnicode > 1 && pUnicodeQuad[1] == 0x0BCD;								// Consonant ending with ்.
-					const bool isVowelSign_2 = pCntUnicode > 1 && pUnicodeQuad[1] == 0x0BBE;								// Consonant ending with ா.
-					const bool isVowelSign_3 = pCntUnicode > 1 && pUnicodeQuad[1] >= 0x0BBF && pUnicodeQuad[1] <= 0x0BC2;	// Consonant ending with ி,	ீ,	ு 	and ூ
-					const bool isVowelSign_4 = pCntUnicode > 1 && pUnicodeQuad[1] >= 0x0BC6 && pUnicodeQuad[1] <= 0x0BC8;	// Consonant ending with ெ, 	ே and ை
-					const bool isVowelSign_5 = pCntUnicode > 1 && pUnicodeQuad[1] >= 0x0BCA && pUnicodeQuad[1] <= 0x0BCB;	// Consonant ending with ொ,and ோ 
-					const bool isVowelSign_6 = pCntUnicode > 1 && pUnicodeQuad[1] == 0x0BCC;								// Consonant ending with ௌ
-					if (isTamilBlock) cid_1 = aNotoSansTamilMap[lcRangeOffset_1];											// CID corresponding to unicode point pUnicodeQuad[0].
+					const bool isVowelSign_1 = pCntUnicodeQuad > 1 && pUnicodeQuad[1] == 0x0BCD;								// Consonant ending with ்.
+					const bool isVowelSign_2 = pCntUnicodeQuad > 1 && pUnicodeQuad[1] == 0x0BBE;								// Consonant ending with ா.
+					const bool isVowelSign_3 = pCntUnicodeQuad > 1 && pUnicodeQuad[1] >= 0x0BBF && pUnicodeQuad[1] <= 0x0BC2;	// Consonant ending with ி,	ீ,	ு 	and ூ
+					const bool isVowelSign_4 = pCntUnicodeQuad > 1 && pUnicodeQuad[1] >= 0x0BC6 && pUnicodeQuad[1] <= 0x0BC8;	// Consonant ending with ெ, 	ே and ை
+					const bool isVowelSign_5 = pCntUnicodeQuad > 1 && pUnicodeQuad[1] >= 0x0BCA && pUnicodeQuad[1] <= 0x0BCB;	// Consonant ending with ொ,and ோ 
+					const bool isVowelSign_6 = pCntUnicodeQuad > 1 && pUnicodeQuad[1] == 0x0BCC;								// Consonant ending with ௌ
+					if (isTamilBlock) cid_1 = aNotoSansTamilMap[lcRangeOffset_1];												// CID corresponding to unicode point pUnicodeQuad[0].
 					//if (isBasicLatin) printf("isBasicLatin=%d\n", isBasicLatin);
-					//for (short kk = 0; kk < pCntUnicode; kk++) { printf("\tuni[%d]=0X%04x", kk, pUnicodeQuad[kk]);}  printf("\n"); //getchar();
+					//for (short kk = 0; kk < pCntUnicodeQuad; kk++) { printf("\tuni[%d]=0X%04x", kk, pUnicodeQuad[kk]);}  printf("\n"); //getchar();
 					if (isBasicLatin) {// Basic Latin Block is from U+0000 to U+00FF, but allowed range is from U+0000 to U+0080.
 						const uint16_t offset = pUnicodeQuad[0] - aUnicode[(int)ELang::eEng].blockBeg;
-						pCID[0] = aNotoSansTamilMap[lcOffset_BasicLatin + offset];				cntCID = 1;				pCntUnicode -= 1;
+						pCID[0] = aNotoSansTamilMap[lcOffset_BasicLatin + offset];				cntCID = 1;				pCntUnicodeQuad -= 1;
 					}
 					else if (isLatin_1_Supplement) {// Latin-1 Supplement Block is from U+0080 to U+00FF.
 						const uint16_t offset = pUnicodeQuad[0] - 0x0080;
-						pCID[0] = aNotoSansTamilMap[lcOffset_Latin_1_Supplement + offset];		cntCID = 1;				pCntUnicode -= 1;
+						pCID[0] = aNotoSansTamilMap[lcOffset_Latin_1_Supplement + offset];		cntCID = 1;				pCntUnicodeQuad -= 1;
 					}
 					else if (isLatin_Extended_A) {// Latin Extended-A Block is from U+0100 to U+017F.
 						const uint16_t offset = pUnicodeQuad[0] - 0x0100;
-						pCID[0] = aNotoSansTamilMap[lcOffset_Latin_Extended_A + offset];		cntCID = 1;				pCntUnicode -= 1;
+						pCID[0] = aNotoSansTamilMap[lcOffset_Latin_Extended_A + offset];		cntCID = 1;				pCntUnicodeQuad -= 1;
 					}
 					else if (isGeneralPunctuation) {// General Punctuation Block: U+2000 to U+206F.
 						const uint16_t offset = pUnicodeQuad[0] - 0x2000;
-						pCID[0] = aNotoSansTamilMap[lcOffset_General_Punctuation + offset];		cntCID = 1;				pCntUnicode -= 1;
+						pCID[0] = aNotoSansTamilMap[lcOffset_General_Punctuation + offset];		cntCID = 1;				pCntUnicodeQuad -= 1;
 					}
 					else if (isCurrencySymbol) {// Currency Symbols Block: U+20A0 to U+20CF.
 						const uint16_t offset = pUnicodeQuad[0] - 0x20A0;
-						pCID[0] = aNotoSansTamilMap[lcOffset_Currency_Symbols + offset];		cntCID = 1;				pCntUnicode -= 1;
+						pCID[0] = aNotoSansTamilMap[lcOffset_Currency_Symbols + offset];		cntCID = 1;				pCntUnicodeQuad -= 1;
 					}
 					else if (isக்ஷ) {// க்ஷ
-						if (pCntUnicode == 4 && pUnicodeQuad[3] >= 0x0BC6 && pUnicodeQuad[3] <= 0x0BC8) {// 	ெ,	ே and ை
-							pCID[0] = lcCID_ெ + pUnicodeQuad[3] - 0x0BC6;		pCID[1] = lcCID_க்ஷ;		cntCID = 2;				pCntUnicode -= 4;
+						if (pCntUnicodeQuad == 4 && pUnicodeQuad[3] >= 0x0BC6 && pUnicodeQuad[3] <= 0x0BC8) {// 	ெ,	ே and ை
+							pCID[0] = lcCID_ெ + pUnicodeQuad[3] - 0x0BC6;		pCID[1] = lcCID_க்ஷ;		cntCID = 2;				pCntUnicodeQuad -= 4;
 						}
-						else if (pCntUnicode == 4 && pUnicodeQuad[3] >= 0x0BCA && pUnicodeQuad[3] <= 0x0BCB) {// 	ொ and ோ
-							pCID[0] = lcCID_ெ + pUnicodeQuad[3] - 0x0BCA;		pCID[1] = lcCID_க்ஷ;		pCID[2] = lcCID_ா;		cntCID = 3;		pCntUnicode -= 4;
+						else if (pCntUnicodeQuad == 4 && pUnicodeQuad[3] >= 0x0BCA && pUnicodeQuad[3] <= 0x0BCB) {// 	ொ and ோ
+							pCID[0] = lcCID_ெ + pUnicodeQuad[3] - 0x0BCA;		pCID[1] = lcCID_க்ஷ;		pCID[2] = lcCID_ா;		cntCID = 3;		pCntUnicodeQuad -= 4;
 						}
-						else if (pCntUnicode == 4 && pUnicodeQuad[3] == 0x0BCC) {// 	ௌ
-							pCID[0] = lcCID_ெ;		pCID[1] = lcCID_க்ஷ;		pCID[2] = lcCID_ௗ;	cntCID = 3;				pCntUnicode -= 4;
+						else if (pCntUnicodeQuad == 4 && pUnicodeQuad[3] == 0x0BCC) {// 	ௌ
+							pCID[0] = lcCID_ெ;		pCID[1] = lcCID_க்ஷ;		pCID[2] = lcCID_ௗ;	cntCID = 3;				pCntUnicodeQuad -= 4;
 						}
 						else {
-							pCID[0] = lcCID_க்ஷ;		cntCID = 1;				pCntUnicode -= 3;
+							pCID[0] = lcCID_க்ஷ;		cntCID = 1;				pCntUnicodeQuad -= 3;
 						}
 					}
 					else if (isஸ்ரீ) {// ஸ்ரீ -> ஸ +  ்  + ர + ீ
-						pCID[0] = lcCID_ஸ்ரீ;			cntCID = 1;				pCntUnicode -= 4;
+						pCID[0] = lcCID_ஸ்ரீ;			cntCID = 1;				pCntUnicodeQuad -= 4;
 					}
 					else if (isconsonant && isVowelSign_1) {// Pulli - ் (U+0BCD)
 						const short offsetFrom_க = cid_1 - lcCID_க;			// offset w.r.t letter க.
-						pCID[0] = lcCID_க் + offsetFrom_க;					cntCID = 1;		pCntUnicode -= 2;
+						pCID[0] = lcCID_க் + offsetFrom_க;					cntCID = 1;		pCntUnicodeQuad -= 2;
 					}
 					else if (isconsonant && isVowelSign_2) {// Kaal - ா
 						uint16_t cid_2 = aNotoSansTamilMap[lcRangeOffset_2];	// CID corresponding to unicode point pUnicodeQuad[1].
-						pCID[0] = cid_1;		pCID[1] = cid_2;			cntCID = 2;		pCntUnicode -= 2;
+						pCID[0] = cid_1;		pCID[1] = cid_2;			cntCID = 2;		pCntUnicodeQuad -= 2;
 					}
 					else if (isconsonant && isVowelSign_3) {//	ி,	ீ,	ு 	and ூ
 						const short idx = pUnicodeQuad[1] - 0x0BBF;
@@ -253,19 +253,19 @@ short up2cid(const ELang pLan, const EFont pFont, const uint32_t pUnicodeQuad[4]
 							uint16_t cid_2 = aNotoSansTamilMap[lcRangeOffset_2];	// CID corresponding to unicode point pUnicodeQuad[1].
 							pCID[0] = cid_1;		pCID[1] = cid_2;		cntCID = 2;
 						}
-						pCntUnicode -= 2;
+						pCntUnicodeQuad -= 2;
 					}
 					else if (isconsonant && isVowelSign_4) {// 	ெ,	ே and ை
-						pCID[0] = lcCID_ெ + pUnicodeQuad[1] - 0x0BC6;		pCID[1] = cid_1;		cntCID = 2;		pCntUnicode -= 2;
+						pCID[0] = lcCID_ெ + pUnicodeQuad[1] - 0x0BC6;		pCID[1] = cid_1;		cntCID = 2;		pCntUnicodeQuad -= 2;
 					}
 					else if (isconsonant && isVowelSign_5) {// 	ொ and ோ
-						pCID[0] = lcCID_ெ + pUnicodeQuad[1] - 0x0BCA;		pCID[1] = cid_1;		pCID[2] = lcCID_ா;		cntCID = 3;		pCntUnicode -= 2;
+						pCID[0] = lcCID_ெ + pUnicodeQuad[1] - 0x0BCA;		pCID[1] = cid_1;		pCID[2] = lcCID_ா;		cntCID = 3;		pCntUnicodeQuad -= 2;
 					}
 					else if (isconsonant && isVowelSign_6) {// 	ௌ
-						pCID[0] = lcCID_ெ;								pCID[1] = cid_1;		pCID[2] = lcCID_ௗ;	cntCID = 3;		pCntUnicode -= 2;
+						pCID[0] = lcCID_ெ;								pCID[1] = cid_1;		pCID[2] = lcCID_ௗ;	cntCID = 3;		pCntUnicodeQuad -= 2;
 					}
 					else {
-						pCID[0] = cid_1;				cntCID = 1;			pCntUnicode -= 1;
+						pCID[0] = cid_1;				cntCID = 1;			pCntUnicodeQuad -= 1;
 					}
 					break;
 				}
@@ -292,61 +292,61 @@ short up2cid(const ELang pLan, const EFont pFont, const uint32_t pUnicodeQuad[4]
 					const uint16_t lcCID_ெ = 93;														// CID for glyph ெ (U+0BC6)
 
 					const uint16_t lcRangeOffset_1 = pUnicodeQuad[0] - aUnicode[(int)pLan].blockBeg;	// CID corresponding to unicode point pUnicodeQuad[0].
-					const uint16_t lcRangeOffset_2 = pCntUnicode > 1 ? pUnicodeQuad[1] - aUnicode[(int)pLan].blockBeg : 0;	// CID corresponding to unicode point pUnicodeQuad[1].
+					const uint16_t lcRangeOffset_2 = pCntUnicodeQuad > 1 ? pUnicodeQuad[1] - aUnicode[(int)pLan].blockBeg : 0;	// CID corresponding to unicode point pUnicodeQuad[1].
 					const bool isTamilBlock = pUnicodeQuad[0] >= aUnicode[(int)ELang::eTamil].blockBeg && pUnicodeQuad[0] < aUnicode[(int)ELang::eTamil].blockEnd;	// Tamil
 					const bool isBasicLatin = pUnicodeQuad[0] >= aUnicode[(int)ELang::eEng].blockBeg && pUnicodeQuad[0] < aUnicode[(int)ELang::eEng].blockEnd/2;	// Basic Latin
 					const bool isLatin_1_Supplement = pUnicodeQuad[0] >= 0x00A0 && pUnicodeQuad[0] <= 0x00FF;	// Latin-1 Supplement
 					const bool isLatin_Extended_A = pUnicodeQuad[0] >= 0x0100 && pUnicodeQuad[0] <= 0x017F;		// Latin Extended-A
 					const bool isGeneralPunctuation = pUnicodeQuad[0] >= 0x2000 && pUnicodeQuad[0] <= 0x206F;	// General Punctuation Block: U+2000 to U+206F
 					const bool isCurrencySymbol = pUnicodeQuad[0] >= 0x20A0 && pUnicodeQuad[0] <= 0x20CF;		// Currency Symbols Block: U+20A0 to U+20CF
-					const bool isக்ஷ = pCntUnicode > 2 && pUnicodeQuad[0] == 0x0B95 && pUnicodeQuad[1] == 0x0BCD && pUnicodeQuad[2] == 0x0BB7;	// க்ஷ Aksharam
-					const bool isஸ்ரீ = pCntUnicode == 4 && pUnicodeQuad[0] == 0x0BB8 && pUnicodeQuad[1] == 0x0BCD && pUnicodeQuad[2] == 0x0BB0 && pUnicodeQuad[3] == 0x0BC0;	// ஸ்ரீ Aksharam
+					const bool isக்ஷ = pCntUnicodeQuad > 2 && pUnicodeQuad[0] == 0x0B95 && pUnicodeQuad[1] == 0x0BCD && pUnicodeQuad[2] == 0x0BB7;	// க்ஷ Aksharam
+					const bool isஸ்ரீ = pCntUnicodeQuad == 4 && pUnicodeQuad[0] == 0x0BB8 && pUnicodeQuad[1] == 0x0BCD && pUnicodeQuad[2] == 0x0BB0 && pUnicodeQuad[3] == 0x0BC0;	// ஸ்ரீ Aksharam
 					const bool isconsonant = pUnicodeQuad[0] >= 0x0B95 && pUnicodeQuad[0] <= 0x0BB9;			// between க and ஹ
-					const bool isVowelSign_1 = pCntUnicode > 1 && pUnicodeQuad[1] == 0x0BCD;								// Consonant ending with ்.
-					const bool isVowelSign_2 = pCntUnicode > 1 && pUnicodeQuad[1] == 0x0BBE;								// Consonant ending with ா.
-					const bool isVowelSign_3 = pCntUnicode > 1 && pUnicodeQuad[1] >= 0x0BBF && pUnicodeQuad[1] <= 0x0BC2;	// Consonant ending with ி,	ீ,	ு 	and ூ
-					const bool isVowelSign_4 = pCntUnicode > 1 && pUnicodeQuad[1] >= 0x0BC6 && pUnicodeQuad[1] <= 0x0BC8;	// Consonant ending with ெ, 	ே and ை
-					const bool isVowelSign_5 = pCntUnicode > 1 && pUnicodeQuad[1] >= 0x0BCA && pUnicodeQuad[1] <= 0x0BCB;	// Consonant ending with ொ,and ோ 
-					const bool isVowelSign_6 = pCntUnicode > 1 && pUnicodeQuad[1] == 0x0BCC;								// Consonant ending with ௌ
-					if (isTamilBlock) cid_1 = aLathaTamilMap[lcRangeOffset_1];												// CID corresponding to unicode point pUnicodeQuad[0].
+					const bool isVowelSign_1 = pCntUnicodeQuad > 1 && pUnicodeQuad[1] == 0x0BCD;								// Consonant ending with ்.
+					const bool isVowelSign_2 = pCntUnicodeQuad > 1 && pUnicodeQuad[1] == 0x0BBE;								// Consonant ending with ா.
+					const bool isVowelSign_3 = pCntUnicodeQuad > 1 && pUnicodeQuad[1] >= 0x0BBF && pUnicodeQuad[1] <= 0x0BC2;	// Consonant ending with ி,	ீ,	ு 	and ூ
+					const bool isVowelSign_4 = pCntUnicodeQuad > 1 && pUnicodeQuad[1] >= 0x0BC6 && pUnicodeQuad[1] <= 0x0BC8;	// Consonant ending with ெ, 	ே and ை
+					const bool isVowelSign_5 = pCntUnicodeQuad > 1 && pUnicodeQuad[1] >= 0x0BCA && pUnicodeQuad[1] <= 0x0BCB;	// Consonant ending with ொ,and ோ 
+					const bool isVowelSign_6 = pCntUnicodeQuad > 1 && pUnicodeQuad[1] == 0x0BCC;								// Consonant ending with ௌ
+					if (isTamilBlock) cid_1 = aLathaTamilMap[lcRangeOffset_1];													// CID corresponding to unicode point pUnicodeQuad[0].
 					//printf("isVowelSign_5=%d\n", isVowelSign_5);
-					//for (short kk = 0; kk < pCntUnicode; kk++) { printf("\tuni[%d]=0X%04x", kk, pUnicodeQuad[kk]);}  printf("\n"); //getchar();
+					//for (short kk = 0; kk < pCntUnicodeQuad; kk++) { printf("\tuni[%d]=0X%04x", kk, pUnicodeQuad[kk]);}  printf("\n"); //getchar();
 					if (isBasicLatin) {// Basic Latin Block is from U+0000 to U+00FF, but allowed range is from U+0000 to U+0080.
 						const uint16_t offset = pUnicodeQuad[0] - aUnicode[(int)ELang::eEng].blockBeg;
-						pCID[0] = aLathaTamilMap[lcOffset_BasicLatin + offset];				cntCID = 1;				pCntUnicode -= 1;
+						pCID[0] = aLathaTamilMap[lcOffset_BasicLatin + offset];				cntCID = 1;				pCntUnicodeQuad -= 1;
 					}
 					else if (isLatin_1_Supplement) {// Latin-1 Supplement Block is from U+0080 to U+00FF.
 						const uint16_t offset = pUnicodeQuad[0] - 0x0080;
-						pCID[0] = aLathaTamilMap[lcOffset_Latin_1_Supplement + offset];		cntCID = 1;				pCntUnicode -= 1;
+						pCID[0] = aLathaTamilMap[lcOffset_Latin_1_Supplement + offset];		cntCID = 1;				pCntUnicodeQuad -= 1;
 					}
 					else if (isLatin_Extended_A) {// Latin Extended-A Block is from U+0100 to U+017F.
 						const uint16_t offset = pUnicodeQuad[0] - 0x0100;
-						pCID[0] = aLathaTamilMap[lcOffset_Latin_Extended_A + offset];		cntCID = 1;				pCntUnicode -= 1;
+						pCID[0] = aLathaTamilMap[lcOffset_Latin_Extended_A + offset];		cntCID = 1;				pCntUnicodeQuad -= 1;
 					}
 					else if (isGeneralPunctuation) {// General Punctuation Block: U+2000 to U+206F.
 						const uint16_t offset = pUnicodeQuad[0] - 0x2000;
-						pCID[0] = aLathaTamilMap[lcOffset_General_Punctuation + offset];		cntCID = 1;			pCntUnicode -= 1;
+						pCID[0] = aLathaTamilMap[lcOffset_General_Punctuation + offset];		cntCID = 1;			pCntUnicodeQuad -= 1;
 					}
 					else if (isCurrencySymbol) {// Currency Symbols Block: U+20A0 to U+20CF.
 						const uint16_t offset = pUnicodeQuad[0] - 0x20A0;
-						pCID[0] = aLathaTamilMap[lcOffset_Currency_Symbols + offset];		cntCID = 1;				pCntUnicode -= 1;
+						pCID[0] = aLathaTamilMap[lcOffset_Currency_Symbols + offset];		cntCID = 1;				pCntUnicodeQuad -= 1;
 					}
 					else if (isக்ஷ) {// க்ஷ
-						if (pCntUnicode == 4 && pUnicodeQuad[3] >= 0x0BC6 && pUnicodeQuad[3] <= 0x0BC8) {// 	ெ,	ே and ை
-							pCID[0] = lcCID_ெ + pUnicodeQuad[3] - 0x0BC6;		pCID[1] = lcCID_க்ஷ;		cntCID = 2;				pCntUnicode -= 4;
+						if (pCntUnicodeQuad == 4 && pUnicodeQuad[3] >= 0x0BC6 && pUnicodeQuad[3] <= 0x0BC8) {// 	ெ,	ே and ை
+							pCID[0] = lcCID_ெ + pUnicodeQuad[3] - 0x0BC6;		pCID[1] = lcCID_க்ஷ;		cntCID = 2;				pCntUnicodeQuad -= 4;
 						}
-						else if (pCntUnicode == 4 && pUnicodeQuad[3] >= 0x0BCA && pUnicodeQuad[3] <= 0x0BCB) {// 	ொ and ோ
-							pCID[0] = lcCID_ெ + pUnicodeQuad[3] - 0x0BCA;		pCID[1] = lcCID_க்ஷ;		pCID[2] = lcCID_ா;		cntCID = 3;		pCntUnicode -= 4;
+						else if (pCntUnicodeQuad == 4 && pUnicodeQuad[3] >= 0x0BCA && pUnicodeQuad[3] <= 0x0BCB) {// 	ொ and ோ
+							pCID[0] = lcCID_ெ + pUnicodeQuad[3] - 0x0BCA;		pCID[1] = lcCID_க்ஷ;		pCID[2] = lcCID_ா;		cntCID = 3;		pCntUnicodeQuad -= 4;
 						}
-						else if (pCntUnicode == 4 && pUnicodeQuad[3] == 0x0BCC) {// 	ௌ
-							pCID[0] = lcCID_ெ;		pCID[1] = lcCID_க்ஷ;		pCID[2] = lcCID_ௗ;	cntCID = 3;				pCntUnicode -= 4;
+						else if (pCntUnicodeQuad == 4 && pUnicodeQuad[3] == 0x0BCC) {// 	ௌ
+							pCID[0] = lcCID_ெ;		pCID[1] = lcCID_க்ஷ;		pCID[2] = lcCID_ௗ;	cntCID = 3;				pCntUnicodeQuad -= 4;
 						}
 						else {
-							pCID[0] = lcCID_க்ஷ;		cntCID = 1;				pCntUnicode -= 3;
+							pCID[0] = lcCID_க்ஷ;		cntCID = 1;				pCntUnicodeQuad -= 3;
 						}
 					}
 					else if (isஸ்ரீ) {// ஸ்ரீ
-						pCID[0] = lcCID_ஸ்ரீ;			cntCID = 1;				pCntUnicode -= 4;
+						pCID[0] = lcCID_ஸ்ரீ;			cntCID = 1;				pCntUnicodeQuad -= 4;
 					}
 					else if (isconsonant && isVowelSign_1) {// Pulli - ்
 						if (cid_1 == lcCID_ஶ) pCID[0] = lcCID_ஶ்;			// CID for glyph ஶ்
@@ -354,11 +354,11 @@ short up2cid(const ELang pLan, const EFont pFont, const uint32_t pUnicodeQuad[4]
 							const short offsetFrom_க = cid_1 - lcCID_க;		// offset w.r.t letter க.
 							pCID[0] = lcCID_க் + offsetFrom_க;
 						}
-						cntCID = 1;		pCntUnicode -= 2;
+						cntCID = 1;		pCntUnicodeQuad -= 2;
 					}
 					else if (isconsonant && isVowelSign_2) {// Kaal - ா
 						uint16_t cid_2 = aLathaTamilMap[lcRangeOffset_2];	// CID corresponding to unicode point pUnicodeQuad[1].
-						pCID[0] = cid_1;		pCID[1] = cid_2;			cntCID = 2;		pCntUnicode -= 2;
+						pCID[0] = cid_1;		pCID[1] = cid_2;			cntCID = 2;		pCntUnicodeQuad -= 2;
 					}
 					else if (isconsonant && isVowelSign_3) {//	ி,	ீ,	ு 	and ூ
 						if (cid_1 == lcCID_ஶ) {
@@ -378,19 +378,19 @@ short up2cid(const ELang pLan, const EFont pFont, const uint32_t pUnicodeQuad[4]
 								pCID[0] = cid_1;		pCID[1] = cid_2;		cntCID = 2;
 							}
 						}
-						pCntUnicode -= 2;
+						pCntUnicodeQuad -= 2;
 					}
 					else if (isconsonant && isVowelSign_4) {// 	ெ,	ே and ை
-						pCID[0] = lcCID_ெ + pUnicodeQuad[1] - 0x0BC6;		pCID[1] = cid_1;		cntCID = 2;		pCntUnicode -= 2;
+						pCID[0] = lcCID_ெ + pUnicodeQuad[1] - 0x0BC6;		pCID[1] = cid_1;		cntCID = 2;		pCntUnicodeQuad -= 2;
 					}
 					else if (isconsonant && isVowelSign_5) {// 	ொ and ோ
-						pCID[0] = lcCID_ெ + pUnicodeQuad[1] - 0x0BCA;		pCID[1] = cid_1;		pCID[2] = lcCID_ா;		cntCID = 3;		pCntUnicode -= 2;
+						pCID[0] = lcCID_ெ + pUnicodeQuad[1] - 0x0BCA;		pCID[1] = cid_1;		pCID[2] = lcCID_ா;		cntCID = 3;		pCntUnicodeQuad -= 2;
 					}
 					else if (isconsonant && isVowelSign_6) {// 	ௌ
-						pCID[0] = lcCID_ெ;									pCID[1] = cid_1;		pCID[2] = lcCID_ௗ;	cntCID = 3;		pCntUnicode -= 2;
+						pCID[0] = lcCID_ெ;									pCID[1] = cid_1;		pCID[2] = lcCID_ௗ;	cntCID = 3;		pCntUnicodeQuad -= 2;
 					}
 					else {
-						pCID[0] = cid_1;				cntCID = 1;			pCntUnicode -= 1;
+						pCID[0] = cid_1;				cntCID = 1;			pCntUnicodeQuad -= 1;
 					}
 					break;
 				}

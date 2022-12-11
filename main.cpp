@@ -514,8 +514,8 @@ char* strps(const ELang pLan, const EFont pFont, const char* pUTF8InString, char
 	Label_Repeat:
 		//printf("before: ii=%d cnt=%d\n", (short)ii, cntUnicode);
 		const short cntUnicodeSave = cntUnicode;									// Take a copy.
-		const short cntCID = up2cid(pLan, pFont, unicodeQuad, cntUnicode, cid);	// Count of CIDs present in the cid array. This value could be either 1, 2, 3 or 4.
-		if (!cntCID) break;															// Error. Mostly pFontName does not match with registered font names.
+		const short cntCID = up2cid(pLan, pFont, unicodeQuad, cntUnicode, cid);		// Returns Count of CIDs present in the cid array. This value varies from 1 to 3.
+		if (!cntCID) break;															// Error occurs mostly due to pFontName did not find a match with registered font names.
 		for (short kk = 0; kk < cntCID; kk++) {
 			if ((len + 2) >= pPSOutputStringSize) break;					// Insufficient pPSOutputStringSize to store character code. Stop processing and return already processed string.
 			sprintf_s(pPSOutString+len, pPSOutputStringSize-len, "%04x", cid[kk]);		len = strlen(pPSOutString);
